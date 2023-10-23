@@ -13,11 +13,11 @@ class OffenseLibrary(models.Model):
 
 
 class PlaceOfOmission(models.Model):
-    place_name = models.CharField(max_length=255, default="CJVAB, Pasay City")
-    date = models.DateTimeField(default=timezone.now, editable=False)
+    place = models.CharField(max_length=255, default="CJVAB, Pasay City")
+    date = models.DateTimeField(default=timezone.now, editable=True)
 
     def __str__(self):
-        return str(self.place_name)
+        return str(self.place)
 
     class Meta:
         verbose_name = 'Place of Omission'
@@ -51,45 +51,18 @@ class Resolution(models.Model):
     intl_first_sergeant = models.CharField(max_length=250, null=True)
     initial_of_ep = models.CharField(max_length=50, null=True)
 
+
 class AFP_Personnel(models.Model):
     id = models.AutoField(primary_key=True)
     afpsn = models.CharField(max_length=50, null=True, default=None)
     last_name = models.CharField(max_length=50, null=True, default=None)
     first_name = models.CharField(max_length=50, null=True, default=None)
     middle_name = models.CharField(max_length=50, null=True, default=None)
-    ext_name = models.CharField(max_length=50, null=True, default=None)
-    date_comp_ret = models.TextField(null=True, default=None)
-    assigned_date = models.DateField(null=True, default=None)
-    rank_id = models.IntegerField(null=True, default=None)
-    paf_motherunit = models.IntegerField(null=True, default=None)
-    sub_unit = models.CharField(max_length=255, null=True, default=None)
-    assigned_status = models.CharField(max_length=50, null=True, default=None)
-    pers_classification = models.CharField(max_length=50, null=True, default=None)
-    pers_category = models.CharField(max_length=50, null=True, default=None)
-    personal_stat = models.CharField(max_length=50, null=True, default=None)
-    sub_brofsvc = models.IntegerField(null=True, default=None)
-    status = models.IntegerField(null=True, default=None)
-    create_date = models.DateTimeField(null=True, default=None)
-    create_ip = models.CharField(max_length=20, null=True, default=None)
-    create_login_type = models.CharField(max_length=3, null=True, default=None)
-    create_user = models.CharField(max_length=25, null=True, default=None)
-    update_date = models.DateTimeField(null=True, default=None)
-    update_ip = models.CharField(max_length=20, null=True, default=None)
-    update_login_type = models.CharField(max_length=3, null=True, default=None)
-    update_user = models.CharField(max_length=25, null=True, default=None)
-    sub_svc = models.CharField(max_length=50, null=True, default=None)
-    source_comm = models.CharField(max_length=100, null=True, default=None)
-    sourcecomid = models.IntegerField(null=True, default=None)
-    dateofcomm = models.DateField(null=True, default=None)
-    date_entered_milsvc = models.DateField(null=True, default=None)
-    hcc = models.CharField(max_length=50, null=True, default=None)
-    sub_flying = models.CharField(max_length=20, null=True, default=None)
-    sub_flying2 = models.CharField(max_length=50, null=True, default=None)
-    stat_fly = models.CharField(max_length=255, null=True, default=None)
-    fly_category = models.CharField(max_length=255, null=True, default=None)
+    rank_id = models.CharField(max_length=50, null=True, default=None)
 
     def __str__(self):
-        return str(self.afpsn) + " " + str(self.last_name) + ", " + str(self.first_name) + " " + str(self.middle_name)
+        return str(self.rank_id) + " " + str(self.last_name) + ", " + \
+            str(self.first_name) + " " + str(self.middle_name) + " " + str(self.afpsn)
 
     class Meta:
         db_table = 'afp_personnel'

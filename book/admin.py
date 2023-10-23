@@ -28,9 +28,9 @@ class PlaceOfOmissionAdmin(ModelAdmin):
     can_create = True
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ('place_name',)
-    list_filter = ('place_name',)
-    search_fields = ('place_name',)
+    list_display = ('place', 'date')
+    list_filter = ('place', 'date')
+    search_fields = ('place', 'date')
 
 
 class PunishmentLibraryAdmin(ModelAdmin):
@@ -84,11 +84,9 @@ class AFPPersonnelAdmin(ModelAdmin):
     can_create = True
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ('afpsn', 'last_name', 'first_name', 'middle_name', 'assigned_date',)
-    list_filter = ('afpsn', 'last_name', 'ext_name', 'assigned_date')
-    search_fields = (
-        'afpsn', 'last_name', 'first_name', 'ext_name', 'assigned_date'
-    )
+    list_display = ('rank_id', 'last_name', 'first_name', 'middle_name', 'afpsn',)
+    list_filter = ('rank_id', 'last_name', 'afpsn')
+    search_fields = ('rank_id', 'last_name', 'afpsn')
 
 
 class OffenseAdmin(ModelAdmin):
@@ -101,9 +99,9 @@ class OffenseAdmin(ModelAdmin):
     add_to_settings_menu = False
     exclude_from_explorer = False
     list_display = ('offense', 'place', 'display_punishments', 'display_imposers', 'display_resolutions')
-    list_filter = ('place__place_name', 'punishments__punishment', 'imposer__name', 'resolution__date')
+    list_filter = ('place__place', 'punishments__punishment', 'imposer__name', 'resolution__date')
     search_fields = (
-        'offense__name', 'place__place_name', 'punishments__punishment', 'imposer__name', 'resolution__date'
+        'offense__name', 'place__place', 'punishments__punishment', 'imposer__name', 'resolution__date'
     )
 
     def display_punishments(self, obj):
@@ -131,6 +129,7 @@ class ManageBookGroupAdmin(ModelAdminGroup):
     items = (
         OffenseAdmin,
         OffenseLibraryAdmin,
+        PlaceOfOmissionAdmin,
         PunishmentLibraryAdmin,
         ImposedByWhomAdmin,
         ResolutionAdmin,
