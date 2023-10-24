@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
     {% block extra_css %}
-    <!-- Bootstrap CSS -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PunishmentBook</title>
     <meta name="csrf-token" content="{{ csrf_token }}">
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+
     {% endblock %}
 </head>
 <body>
@@ -19,97 +23,251 @@
     <div class="d-flex justify-content-center align-items-center">
         <h1 class="mt-5 mb-5 text-center">PUNISHMENT BOOK</h1>
     </div>
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <!-- First Column -->
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                    <label for="personnel">Selected Personnel:</label>
-                    <select multiple class="form-control" id="personnel" name="personnel">
-                        <option value="personnel1_id">Rank1 LastName1, FirstName1 MiddleName1</option>
-                        <option value="personnel2_id">Rank2 LastName2, FirstName2 MiddleName2</option>
-                    </select>
-                </div>
-            </div>
 
-            <!-- Second Column -->
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 col-md-4 col-12">AFP Personnel</h6>
-                        <button id="refreshPersonnel" class="btn btn-success btn-sm">Refresh</button>
+    <form action="{% url 'submit_offense' %}" method="post">
+    {% csrf_token %}
+        <!-- AFP PERSONNEL-->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <!-- First Column -->
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label for="personnel">Selected Personnel:</label>
+                        <select multiple class="form-control" id="personnel" name="personnel">
+                            <option value="personnel1_id">Rank1 LastName1, FirstName1 MiddleName1</option>
+                            <option value="personnel2_id">Rank2 LastName2, FirstName2 MiddleName2</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped clustered" id="showPersonnel">
-                                <thead>
-                                    <tr>
-                                        <th>Rank</th>
-                                        <th>First</th>
-                                        <th>Middle</th>
-                                        <th>Last</th>
-                                        <th>Afpsn</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center"></tbody>
-                            </table>
+                <!-- Second Column -->
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 col-md-4 col-12">AFP Personnel</h6>
+                            <button id="refreshPersonnel" class="btn btn-success btn-sm">Refresh</button>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive pb-3">
+                                <table class="table table-bordered table-striped clustered" id="showPersonnel">
+                                    <thead>
+                                        <tr>
+                                            <th width="10px;">Rank</th>
+                                            <th>First</th>
+                                            <th>Middle</th>
+                                            <th>Last</th>
+                                            <th width="10px;">Afpsn</th>
+                                            <th width="10px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <!-- VIOLATIONS -->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label for="offenseList">Violations:</label>
+                        <select multiple class="form-control" id="offenseList" name="violations">
+                            <option value="1">Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)</option>
+                            <option value="2">Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)</option>
+                        </select>
+                    </div>
+                </div>
 
-    <div class="container mt-5 mb-5">
-        <div class="card">
-            <div class="card-header d-flex justify-content-end align-items-center">
-                <h6 class="mb-0 col-md-4 col-12">Offense & Violation Records</h6>
-                <div class="col-md-5 col-12 ml-auto">
-                    <div class="input-group">
-                        <input type="text" id="violationSelected" class="form-control" placeholder="Selected Violation">
-                        <div class="input-group-append">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 col-md-4 col-12">Offense & Violation Records</h6>
                             <button id="refreshViolations" class="btn btn-success btn-sm">Refresh</button>
                         </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped clustered" id="offenseTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Offense Records</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped clustered" id="offenseTable">
-                        <thead>
-                            <tr>
-                                <th>Offense Records</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+        <!-- DATE & PLACE OMISSION -->
+        <div class="container mt-5 mb-5 pt-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-end align-items-center">
+                    <h6 class="mb-0 col-md-4 col-12">Date & Place Omission</h6>
+                    <div class="col-md-8 col-12 ml-auto">
+                        <div class="input-group">
+                            <input type="text" id="dateOmission" class="form-control" placeholder="Selected Date">
+                            <input type="text" id="placeOmission" class="form-control" placeholder="Selected Place of Omission">
+                            <div class="input-group-append">
+                                <button id="refreshOmission" class="btn btn-success btn-sm">Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped clustered" id="placeOmissionTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Place of Omission</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <!-- PUNISHMENT -->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label for="punishmentList">Punishments:</label>
+                        <select multiple class="form-control" id="punishmentList" name="punishment">
+                            <option value="1">Restriction within CJVAB and to certain specified limits without suspension from duty and/or any activities for sixty (60) consecutive days.</option>
+                            <option value="2">Restriction within CJVAB and to certain specified limits without suspension from duty and/or any activities for sixty (60) consecutive days.</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 col-md-4 col-12">Punishment Library</h6>
+                            <button id="refreshPunishment" class="btn btn-success btn-sm">Refresh</button>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped clustered" id="punishmentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Punishment</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- BY WHOM IMPOSE -->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label for="whomImposed">By Whom Impose:</label>
+                        <select multiple class="form-control" id="whomImposed" name="punishment">
+                            <option value="1">CO, PAFHRMC</option>
+                            <option value="2">First Sergeant</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 col-md-4 col-12">Imposers</h6>
+                            <button id="refreshImposerRecords" class="btn btn-success btn-sm">Refresh</button>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped clustered" id="imposerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dateOfNotice">Date of Notice to Accused:</label>
+                        <input type="text" class="form-control" id="dateOfNotice" placeholder="Select Date">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 mb-5 text-center">
+            <button type="submit" class="btn btn-primary m-auto">Submit</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
 {% block extra_js %}
-    <!-- jQuery and Bootstrap JS -->
+
+     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- SweetAlert2 JS -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Bootstrap Datetimepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+    <!-- Your Custom Scripts -->
     <script src="{% static 'js/load_dt_personnel.js' %}"></script>
     <script src="{% static 'js/load_dt_offense.js' %}"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
+            $('#dateOmission').datetimepicker();
             initializePersonnelDataTable();
             initializeOffenseDataTable();
+
+            $('#dateOfNotice').datetimepicker();
+
         });
     </script>
+
 {% endblock %}
 </body>
 </html>

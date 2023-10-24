@@ -110,3 +110,8 @@ def get_offense(request):
     }
 
     return JsonResponse(response)
+
+
+def submit_offense(request):
+    context = {}
+    return render(request, 'book/punishment_book_page.html', context)
