@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
-
     {% endblock %}
 </head>
 <body>
@@ -73,6 +72,7 @@
         <!-- VIOLATIONS -->
         <div class="container mt-5 mb-5">
             <div class="row">
+
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="offenseList">Violations:</label>
@@ -112,6 +112,7 @@
         <!-- DATE & PLACE OMISSION -->
         <div class="container mt-5 mb-5 pt-3">
             <div class="card">
+
                 <div class="card-header d-flex justify-content-end align-items-center">
                     <h6 class="mb-0 col-md-4 col-12">Date & Place Omission</h6>
                     <div class="col-md-8 col-12 ml-auto">
@@ -256,12 +257,14 @@
     <!-- Your Custom Scripts -->
     <script src="{% static 'js/load_dt_personnel.js' %}"></script>
     <script src="{% static 'js/load_dt_offense.js' %}"></script>
+    <script src="{% static 'js/load_dt_omission.js' %}"></script>
 
     <script>
         $(document).ready(function() {
             $('#dateOmission').datetimepicker();
             initializePersonnelDataTable();
             initializeOffenseDataTable();
+            initializeOmissionDataTable();
 
             $('#dateOfNotice').datetimepicker();
 
