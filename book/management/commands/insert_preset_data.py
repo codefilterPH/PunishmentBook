@@ -91,9 +91,9 @@ class Command(BaseCommand):
             "middle": "Lugatiman"
         }
 
-        # self.insert_to_punishment(data)
-        # self.insert_to_offense(data)
-        # self.insert_to_date_place_omission(data)
-        # self.insert_to_afp_personnel(data)
+        self.insert_to_punishment(data)
+        self.insert_to_offense(data)
+        self.insert_to_date_place_omission(data)
+        self.insert_to_afp_personnel(data)
         self.insert_imposer(data)
 

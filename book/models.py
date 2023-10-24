@@ -71,6 +71,7 @@ class AFP_Personnel(models.Model):
 
 
 class Offense(models.Model):
+    personnel = models.ForeignKey(AFP_Personnel, related_name="afp_personnel", on_delete=models.DO_NOTHING, null=True)
     offense = models.ForeignKey(OffenseLibrary, related_name="offense_library", on_delete=models.DO_NOTHING)
     place = models.ForeignKey(PlaceOfOmission, related_name="place_of_omission", on_delete=models.DO_NOTHING)
     punishments = models.ManyToManyField(PunishmentLibrary, related_name="punishment_library")
