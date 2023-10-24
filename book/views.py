@@ -38,7 +38,7 @@ def get_personnel(request):
 
     # Page and page length
     start = int(request.GET.get('start', 0))
-    length = int(request.GET.get('length', 10))
+    length = int(request.GET.get('length', 5))
     end = start + length
 
     # Get the data for the current page
@@ -56,7 +56,7 @@ def get_personnel(request):
                 'first_name': item.first_name,
                 'middle_name': item.middle_name,
                 'afpsn': item.afpsn,
-                'actions': f'<button onclick="submitOffense({item.id})" class="btn btn-sm btn-primary mr-auto">Select Personnel</button>'
+                'actions': f'<button onclick="refreshPersonnel({item.id})" class="btn btn-sm btn-info mr-auto">Select</button>'
             } for item in filtered_data
         ]
     }
@@ -90,7 +90,7 @@ def get_offense(request):
 
     # Page and page length
     start = int(request.GET.get('start', 0))
-    length = int(request.GET.get('length', 10))
+    length = int(request.GET.get('length', 5))
     end = start + length
 
     # Get the data for the current page
@@ -104,7 +104,7 @@ def get_offense(request):
         'data': [
             {
                 'violation': item.violation,
-                'actions': f'<button onclick="refreshOffenseRecords({item.id})">Use</button>'
+                'actions': f'<button onclick="refreshViolations({item.id})" class="btn btn-sm btn-info mr-auto">Use</button>'
             } for item in filtered_data
         ]
     }

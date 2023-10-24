@@ -24,7 +24,7 @@
     }
 
     // Trigger DataTable refresh when the button is clicked
-    $('#refreshDataTable').on('click', function () {
+    $('#refreshPersonnel').on('click', function () {
         fetchPersonnel();
     });
 }
