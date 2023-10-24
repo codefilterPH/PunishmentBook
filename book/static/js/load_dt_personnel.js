@@ -1,4 +1,4 @@
-$(document).ready(function () {
+ function initializePersonnelDataTable() {
     // Define the DataTable
     var personnelTable = $('#showPersonnel').DataTable({
         serverSide: true,
@@ -27,4 +27,4 @@ $(document).ready(function () {
     $('#refreshDataTable').on('click', function () {
         fetchPersonnel();
     });
-});
+}

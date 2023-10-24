@@ -21,13 +21,19 @@
     <h1 class="mt-4 mb-4">Punishment Book</h1>
     <h3>STEP 1: Select Personnel</h3>
 
-    <div class="mt-4">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h6>AFP Personnel</h6>
-                <button id="refreshDataTable" class="btn btn-primary">Refresh</button>
-            </div>
-            <div class="card-body">
+    <div class="mt-4 b-4">
+         <div class="card">
+             <div class="card-header d-flex justify-content-between align-items-center">
+                 <h6 class="mb-0 col-2">AFP Personnel</h6>
+                 <div class="col-8">
+                     <div class="input-group">
+                        <input type="text" id="personnelSelected" class="form-control" placeholder="Selected Personnel">&nbsp
+                        <button id="refreshDataTable" class="btn btn-primary btn-sm">Refresh</button>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped clustered" id="showPersonnel">
                         <thead>
@@ -40,9 +46,28 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Table data rows go here -->
-                        </tbody>
+                        <tbody></tbody>
+                    </table>
+                </div>
+             </div>
+         </div>
+    </div>
+
+    <h3 class="mt-4 mb-4">STEP 2: Select Offense</h3>
+
+    <div class="mt-4 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6>Offense Violation Records</h6>
+                <button id="refreshOffenseRecords" class="btn btn-primary btn-sm">Refresh</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped clustered" id="showOffenseTable">
+                        <thead>
+                            <tr><th>Offense & Violation Records</th></tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -52,12 +77,20 @@
 </div>
 {% endblock %}
 {% block extra_js %}
-<!-- jQuery and Bootstrap JS -->
+    <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- SweetAlert2 JS -->
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
     <script src="{% static 'js/load_dt_personnel.js' %}"></script>
+    <script src="{% static 'js/load_dt_offense.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            initializePersonnelDataTable();
+            //initializeOffenseDataTable();
+        });
+    </script>
 {% endblock %}
 </body>
 </html>
