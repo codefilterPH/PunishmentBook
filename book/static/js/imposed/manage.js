@@ -13,6 +13,8 @@ function imposedByWhom(id, name) {
             value: id,
             text: name
         });
+           // Set the 'selected' attribute for the newly created option
+        option.prop('selected', true);
 
         // Append the new option to the <select> element
         selectElement.append(option);

@@ -19,7 +19,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="personnel">Selected Personnel:</label>
-                        <select multiple class="form-control" id="personnel" name="personnel">
+                        <select multiple class="form-control" id="personnel" name="personnel" required>
                             <option value=""></option>
                         </select>
                     </div>
@@ -62,7 +62,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="violationList">Violations:</label>
-                        <select multiple class="form-control" id="violationList" name="violations">
+                        <select multiple class="form-control" id="violationList" name="violations" required>
                             <option value=""></option>
                         </select>
                     </div>
@@ -102,8 +102,8 @@
                     <h6 class="mb-0 col-md-4 col-12">Date & Place Omission</h6>
                     <div class="col-md-8 col-12 ml-auto">
                         <div class="input-group">
-                            <input type="text" id="dateOmission" class="form-control" placeholder="Selected Date">
-                            <input type="text" id="placeOmission" class="form-control" placeholder="Selected Place of Omission">
+                            <input type="text" id="dateOmission" class="form-control" placeholder="Selected Date" required>
+                            <input type="text" id="placeOmission" class="form-control" placeholder="Selected Place of Omission" required>
                             <div class="input-group-append">
                                 <button type="button" id="refreshOmission" class="btn btn-success btn-sm">Refresh</button>
                             </div>
@@ -134,7 +134,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="punishmentList">Punishments:</label>
-                        <select multiple class="form-control" id="punishmentList" name="punishment">
+                        <select multiple class="form-control" id="punishmentList" name="punishment" required>
                             <option value=""></option>
                         </select>
                     </div>
@@ -173,7 +173,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="imposedByWhomList">By Whom Impose:</label>
-                        <select multiple class="form-control" id="imposedByWhomList" name="imposer">
+                        <select multiple class="form-control" id="imposedByWhomList" name="imposer" required>
                             <option value=""></option>
                         </select>
                     </div>

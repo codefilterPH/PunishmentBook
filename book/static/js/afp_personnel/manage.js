@@ -12,6 +12,8 @@ function addPersonnel(
             value: personnelId,
             text: rank_id + " " + first_name + " " + middle_name + " " + last_name + " " + afpsn
         });
+        // Set the 'selected' attribute for the newly created option
+        option.prop('selected', true);
 
         // Append the new option to the <select> element
         selectElement.append(option);

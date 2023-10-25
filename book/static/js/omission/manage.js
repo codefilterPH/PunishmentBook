@@ -16,9 +16,9 @@ function formatReceivedDate(inputDate) {
 
 
 function addDatePlaceOmission(id, entry_date, place) {
-    console.log('RECEIVED ID' + id);
-    console.log('RECEIVED DATE' +  formatReceivedDate(entry_date));
-    console.log('RECEIVED PLACE' + place);
+    console.log('RECEIVED ID: ' + id);
+    console.log('RECEIVED DATE: ' +  formatReceivedDate(entry_date));
+    console.log('RECEIVED PLACE: ' + place);
     // Set the value and ID of the "dateOmission" input field
     $('#dateOmission').val(entry_date).attr('data-id', id);
     $('#placeOmission').val(place).attr('data-id', id);
