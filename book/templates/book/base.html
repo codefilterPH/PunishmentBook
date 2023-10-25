@@ -39,6 +39,7 @@
     <script src="{% static 'js/table/load_dt_offense.js' %}"></script>
     <script src="{% static 'js/table/load_dt_omission.js' %}"></script>
     <script src="{% static 'js/table/load_dt_punishments.js' %}"></script>
+    <script src="{% static 'js/table/load_dt_imposed.js' %}"></script>
     <!--PAGES-->
     <script src="{% static 'js/load_submitted_offense.js' %}"></script>
     <script src="{% static 'js/afp_personnel/manage.js' %}"></script>
@@ -47,7 +48,7 @@
     <script src="{% static 'js/submission/manage.js' %}"></script>
     <script src="{% static 'js/violations/manage.js' %}"></script>
     <script src="{% static 'js/punishment/manage.js' %}"></script>
-
+    <script src="{% static 'js/imposed/manage.js' %}"></script>
 
     <script>
         function toggleSidebar() {
@@ -61,6 +62,7 @@
             initializeOffenseDataTable();
             initializeOmissionDataTable();
             initializeSubmittedOffenseDT();
+            initializeImposedDt();
 
             $('#dateOfNotice').datetimepicker();
 

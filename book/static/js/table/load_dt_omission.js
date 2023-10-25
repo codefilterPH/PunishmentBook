@@ -1,5 +1,5 @@
 function initializeOmissionDataTable() {
-    console.log('INITIALIZE OMISSION DATATABLE');
+
     var omissionTable = $('#placeOmissionTable').DataTable({
         serverSide: true,
         processing: true,

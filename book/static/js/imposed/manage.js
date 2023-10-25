@@ -1,20 +1,17 @@
-// Function to add punishment to the <select> element
-function addPunishment(
-        id, punishment
-    ) {
 
-    console.log('ID: ' + id);
-    console.log('PUNISHMENT: ' + punishment)
+function imposedByWhom(id, name) {
+    console.log('RECEIVED ID: ' + id);
+    console.log('RECEIVED NAME: ' +  name);
 
     // Get the <select> element
-    var selectElement = $('#punishmentList');
+    var selectElement = $('#imposedByWhomList');
 
     // Check if the personnel is already selected
     if (selectElement.find('option[value="' + id + '"]').length === 0) {
         // Create a new <option> element
         var option = $('<option>', {
             value: id,
-            text: punishment
+            text: name
         });
 
         // Append the new option to the <select> element
