@@ -1,6 +1,6 @@
 function initializeOffenseDataTable() {
 
-    var offenseTable = $('#offenseTable').DataTable({
+    var violationsTable = $('#violationsTable').DataTable({
         serverSide: true,
         processing: true,
         ajax: {
@@ -14,12 +14,13 @@ function initializeOffenseDataTable() {
     });
 
     // Function to refresh the DataTable
-    function fetchOffense() {
-        offenseTable.ajax.reload();
+    function fetchViolations() {
+        violationsTable.ajax.reload();
     }
 
     // Trigger DataTable refresh when the button is clicked
     $('#refreshViolations').on('click', function () {
-        fetchOffense();
+        event.preventDefault();
+        fetchViolations();
     });
 }

@@ -21,6 +21,7 @@ function initializeOmissionDataTable() {
 
     // Trigger DataTable refresh when the button is clicked
     $('#refreshOmission').on('click', function () {
+        event.preventDefault();
         fetchPlaceOmission();
     });
 }

@@ -1,0 +1,70 @@
+{% load static %}
+<html lang="en">
+<head>
+    {% block extra_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PunishmentBook</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Bootstrap Datetimepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+
+    <!-- Your Custom Scripts -->
+
+    <script src="{% static 'js/load_submitted_offense.js' %}"></script>
+    <script src="{% static 'js/afp_personnel/manage.js' %}"></script>
+    <!-- ADDING DATA -->
+    <script src="{% static 'js/submission/manage.js' %}"></script>
+    <script src="{% static 'js/violations/manage.js' %}"></script>
+    <script src="{% static 'js/punishment/manage.js' %}"></script>
+    <!--TABLE-->
+    <script src="{% static 'js/table/load_dt_personnel.js' %}"></script>
+    <script src="{% static 'js/table/load_dt_offense.js' %}"></script>
+    <script src="{% static 'js/table/load_dt_omission.js' %}"></script>
+    <script src="{% static 'js/table/load_dt_punishments.js' %}"></script>
+
+    <script>
+        function toggleSidebar() {
+            $('#sidebar').toggleClass('active');
+        }
+        $(document).ready(function() {
+            $('#dateOmission').datetimepicker();
+            initializePersonnelDataTable();
+            initializeOffenseDataTable();
+            initializeOmissionDataTable();
+            initializeSubmittedOffenseDT();
+
+            $('#dateOfNotice').datetimepicker();
+
+        });
+    </script>
+
+{% endblock %}
+
+</body>
+</html>

@@ -1,29 +1,16 @@
+{% extends "book/base.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    {% block extra_css %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block body_class %}template-Submission{% endblock %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PunishmentBook</title>
-    <meta name="csrf-token" content="{{ csrf_token }}">
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-
-    {% endblock %}
-</head>
-<body>
 {% block content %}
 <div class="container-fluid">
     <div class="d-flex justify-content-center align-items-center">
         <h1 class="mt-5 mb-5 text-center">PUNISHMENT BOOK</h1>
     </div>
 
-    <form action="{% url 'submit_offense' %}" method="post">
+    <form id="submitForm" action="{% url 'submit_offense' %}" method="post">
     {% csrf_token %}
         <!-- AFP PERSONNEL-->
         <div class="container mt-5 mb-5">
@@ -33,8 +20,7 @@
                     <div class="form-group">
                         <label for="personnel">Selected Personnel:</label>
                         <select multiple class="form-control" id="personnel" name="personnel">
-                            <option value="personnel1_id">Rank1 LastName1, FirstName1 MiddleName1</option>
-                            <option value="personnel2_id">Rank2 LastName2, FirstName2 MiddleName2</option>
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +30,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0 col-md-4 col-12">AFP Personnel</h6>
-                            <button id="refreshPersonnel" class="btn btn-success btn-sm">Refresh</button>
+                            <button type="button" id="refreshPersonnel" class="btn btn-success btn-sm">Refresh</button>
                         </div>
 
                         <div class="card-body">
@@ -75,10 +61,9 @@
 
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
-                        <label for="offenseList">Violations:</label>
-                        <select multiple class="form-control" id="offenseList" name="violations">
-                            <option value="1">Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)</option>
-                            <option value="2">Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)</option>
+                        <label for="violationList">Violations:</label>
+                        <select multiple class="form-control" id="violationList" name="violations">
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -88,12 +73,12 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0 col-md-4 col-12">Offense & Violation Records</h6>
-                            <button id="refreshViolations" class="btn btn-success btn-sm">Refresh</button>
+                            <button type="button" id="refreshViolations" class="btn btn-success btn-sm">Refresh</button>
                         </div>
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped clustered" id="offenseTable">
+                                <table class="table table-bordered table-striped clustered" id="violationsTable">
                                     <thead>
                                         <tr>
                                             <th>Offense Records</th>
@@ -120,7 +105,7 @@
                             <input type="text" id="dateOmission" class="form-control" placeholder="Selected Date">
                             <input type="text" id="placeOmission" class="form-control" placeholder="Selected Place of Omission">
                             <div class="input-group-append">
-                                <button id="refreshOmission" class="btn btn-success btn-sm">Refresh</button>
+                                <button type="button" id="refreshOmission" class="btn btn-success btn-sm">Refresh</button>
                             </div>
                         </div>
                     </div>
@@ -150,8 +135,7 @@
                     <div class="form-group">
                         <label for="punishmentList">Punishments:</label>
                         <select multiple class="form-control" id="punishmentList" name="punishment">
-                            <option value="1">Restriction within CJVAB and to certain specified limits without suspension from duty and/or any activities for sixty (60) consecutive days.</option>
-                            <option value="2">Restriction within CJVAB and to certain specified limits without suspension from duty and/or any activities for sixty (60) consecutive days.</option>
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -161,7 +145,7 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0 col-md-4 col-12">Punishment Library</h6>
-                            <button id="refreshPunishment" class="btn btn-success btn-sm">Refresh</button>
+                            <button type="button" id="refreshPunishment" class="btn btn-success btn-sm">Refresh</button>
                         </div>
 
                         <div class="card-body">
@@ -201,7 +185,7 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0 col-md-4 col-12">Imposers</h6>
-                            <button id="refreshImposerRecords" class="btn btn-success btn-sm">Refresh</button>
+                            <button type="button" id="refreshImposerRecords" class="btn btn-success btn-sm">Refresh</button>
                         </div>
 
                         <div class="card-body">
@@ -235,42 +219,8 @@
         </div>
 
         <div class="container mt-5 mb-5 text-center">
-            <button type="submit" class="btn btn-primary m-auto">Submit</button>
+            <button id="submitOffenseBtn" type="submit" class="btn btn-primary m-auto">Submit</button>
         </div>
     </form>
 </div>
 {% endblock %}
-{% block extra_js %}
-
-     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- Bootstrap Datetimepicker JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
-    <!-- Your Custom Scripts -->
-    <script src="{% static 'js/load_dt_personnel.js' %}"></script>
-    <script src="{% static 'js/load_dt_offense.js' %}"></script>
-    <script src="{% static 'js/load_dt_omission.js' %}"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#dateOmission').datetimepicker();
-            initializePersonnelDataTable();
-            initializeOffenseDataTable();
-            initializeOmissionDataTable();
-
-            $('#dateOfNotice').datetimepicker();
-
-        });
-    </script>
-
-{% endblock %}
-</body>
-</html>

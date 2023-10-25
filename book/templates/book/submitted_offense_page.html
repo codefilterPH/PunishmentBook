@@ -1,0 +1,39 @@
+{% extends "book/base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block body_class %}template-Submission{% endblock %}
+
+{% block content %}
+<!-- AFP PERSONNEL-->
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <!-- Second Column -->
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 col-md-4 col-12">Submitted Violations</h6>
+                        <button id="refreshSubmittedViolationDt" class="btn btn-success btn-sm">Refresh</button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive pb-3">
+                            <table class="table table-bordered table-striped clustered" id="submittedViolationDt">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Violation</th>
+                                        <th>Date of Notice to Accused</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
