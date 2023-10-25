@@ -1,5 +1,5 @@
 function initializeOffenseDataTable() {
-
+    console.log('INITIALIZE VIOLATION DATATABLE');
     var violationsTable = $('#violationsTable').DataTable({
         serverSide: true,
         processing: true,

@@ -34,26 +34,29 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
 
-    <!-- Your Custom Scripts -->
-
-    <script src="{% static 'js/load_submitted_offense.js' %}"></script>
-    <script src="{% static 'js/afp_personnel/manage.js' %}"></script>
-    <!-- ADDING DATA -->
-    <script src="{% static 'js/submission/manage.js' %}"></script>
-    <script src="{% static 'js/violations/manage.js' %}"></script>
-    <script src="{% static 'js/punishment/manage.js' %}"></script>
-    <!--TABLE-->
+     <!--TABLE-->
     <script src="{% static 'js/table/load_dt_personnel.js' %}"></script>
     <script src="{% static 'js/table/load_dt_offense.js' %}"></script>
     <script src="{% static 'js/table/load_dt_omission.js' %}"></script>
     <script src="{% static 'js/table/load_dt_punishments.js' %}"></script>
+    <!--PAGES-->
+    <script src="{% static 'js/load_submitted_offense.js' %}"></script>
+    <script src="{% static 'js/afp_personnel/manage.js' %}"></script>
+    <!-- ADDING DATA -->
+    <script src="{% static 'js/omission/manage.js' %}"></script>
+    <script src="{% static 'js/submission/manage.js' %}"></script>
+    <script src="{% static 'js/violations/manage.js' %}"></script>
+    <script src="{% static 'js/punishment/manage.js' %}"></script>
+
 
     <script>
         function toggleSidebar() {
             $('#sidebar').toggleClass('active');
         }
+
         $(document).ready(function() {
             $('#dateOmission').datetimepicker();
+
             initializePersonnelDataTable();
             initializeOffenseDataTable();
             initializeOmissionDataTable();

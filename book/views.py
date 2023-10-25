@@ -5,6 +5,7 @@ from .models import (
     AFP_Personnel, OffenseLibrary, PlaceOfOmission, Offense, PunishmentLibrary
 )
 from django.http import JsonResponse
+from book.utils.date_formatter import date_formatter2
 
 # @login_required
 def submission_page(request):
@@ -209,8 +210,11 @@ def place_of_omission(request):
         'data': [
             {
                 'place': item.place,
-                'date': item.date,
-                'actions': f'<button type="button" onclick="refreshOmission({item.id})" class="btn btn-sm btn-info mr-auto">Use</button>'
+                'date': date_formatter2(item.date.strftime("%Y-%m-%dT%H:%M:%S%z")),
+                'actions': f"""<button type="button" onclick="addDatePlaceOmission(
+                        {item.id}, \'{date_formatter2(item.date.strftime("%Y-%m-%dT%H:%M:%S%z"))}\', 
+                        \'{item.place}\')" class="btn btn-sm btn-info">Use</button>
+                """
             } for item in filtered_data
         ]
     }
