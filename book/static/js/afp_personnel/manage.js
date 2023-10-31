@@ -5,6 +5,8 @@ function addPersonnel(
     // Get the <select> element
     var selectElement = $('#personnel');
 
+    console.log('PERSONNEL\'S ID: ' + personnelId);
+
     // Check if the personnel is already selected
     if (selectElement.find('option[value="' + personnelId + '"]').length === 0) {
         // Create a new <option> element

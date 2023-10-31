@@ -98,11 +98,16 @@ class OffenseAdmin(ModelAdmin):
     can_create = True
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ('offense', 'place', 'display_punishments', 'display_imposers', 'display_resolutions')
+    list_display = ('display_offenses', 'place', 'display_punishments', 'display_imposers', 'display_resolutions')
     list_filter = ('place__place', 'punishments__punishment', 'imposer__name', 'resolution__date')
     search_fields = (
         'offense__name', 'place__place', 'punishments__punishment', 'imposer__name', 'resolution__date'
     )
+
+    def display_offenses(self, obj):
+        return ", ".join([o.violation for o in obj.offense.all()])
+
+    display_offenses.short_description = 'Offenses'
 
     def display_punishments(self, obj):
         return ", ".join([p.punishment for p in obj.punishments.all()])
