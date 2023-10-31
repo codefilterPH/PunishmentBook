@@ -1,10 +1,10 @@
-function initializeOffenseDataTable() {
+function initializePunishmentDt() {
 
     var punishmentTable = $('#punishmentTable').DataTable({
         serverSide: true,
         processing: true,
         ajax: {
-            url: '/get-punishments/',
+            url: '/get-punishments-dt/',
             type: 'GET',
         },
         columns: [

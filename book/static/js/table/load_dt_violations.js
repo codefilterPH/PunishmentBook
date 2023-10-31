@@ -1,10 +1,10 @@
-function initializeOffenseDataTable() {
-    console.log('INITIALIZE VIOLATION DATATABLE');
+function initializeViolationsDT() {
+
     var violationsTable = $('#violationsTable').DataTable({
         serverSide: true,
         processing: true,
         ajax: {
-            url: '/get-offense/',
+            url: '/get-violations-dt/',
             type: 'GET',
         },
         columns: [

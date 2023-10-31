@@ -10,7 +10,7 @@
         <h1 class="mt-5 mb-5 text-center">PUNISHMENT BOOK</h1>
     </div>
 
-    <form id="submitForm" action="{% url 'submit_offense' %}" method="post">
+    <form id="submitForm" action="{% url 'submit_function' %}" method="post">
     {% csrf_token %}
         <!-- AFP PERSONNEL-->
         <div class="container mt-5 mb-5">
@@ -20,7 +20,6 @@
                     <div class="form-group">
                         <label for="personnel">Selected Personnel:</label>
                         <select multiple class="form-control" id="personnel" name="personnel" required>
-                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -35,13 +34,13 @@
 
                         <div class="card-body">
                             <div class="table-responsive pb-3">
-                                <table class="table table-bordered table-striped clustered" id="showPersonnel">
+                                <table class="table table-bordered table-striped w-100" id="showPersonnel">
                                     <thead>
                                         <tr>
                                             <th width="10px;">Rank</th>
-                                            <th>First</th>
-                                            <th>Middle</th>
-                                            <th>Last</th>
+                                            <th class="text-start">First</th>
+                                            <th class="text-start">Middle</th>
+                                            <th class="text-start">Last</th>
                                             <th width="10px;">Afpsn</th>
                                             <th width="10px;">Actions</th>
                                         </tr>
@@ -62,9 +61,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="violationList">Violations:</label>
-                        <select multiple class="form-control" id="violationList" name="violations" required>
-                            <option value=""></option>
-                        </select>
+                        <select multiple class="form-control" id="violationList" name="violations" required></select>
                     </div>
                 </div>
 
@@ -78,10 +75,10 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped clustered" id="violationsTable">
+                                <table class="table table-bordered table-striped w-100" id="violationsTable">
                                     <thead>
                                         <tr>
-                                            <th>Records</th>
+                                            <th>Violations</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -113,7 +110,7 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped clustered" id="placeOmissionTable">
+                        <table class="table table-bordered table-striped w-100" id="placeOmissionTable">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -131,12 +128,11 @@
         <!-- PUNISHMENT -->
         <div class="container mt-5 mb-5">
             <div class="row">
+
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="punishmentList">Punishments:</label>
-                        <select multiple class="form-control" id="punishmentList" name="punishment" required>
-                            <option value=""></option>
-                        </select>
+                        <select multiple class="form-control" id="punishmentList" name="punishment" required></select>
                     </div>
                 </div>
 
@@ -150,10 +146,10 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped clustered" id="punishmentTable">
+                                <table class="table table-bordered table-striped w-100" id="punishmentTable">
                                     <thead>
                                         <tr>
-                                            <th>Punishment</th>
+                                            <th class="mr-auto">Punishment</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -173,9 +169,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label for="imposedByWhomList">By Whom Impose:</label>
-                        <select multiple class="form-control" id="imposedByWhomList" name="imposer" required>
-                            <option value=""></option>
-                        </select>
+                        <select multiple class="form-control" id="imposedByWhomList" name="imposer" required></select>
                     </div>
                 </div>
 
@@ -189,7 +183,7 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped clustered" id="imposerTable">
+                                <table class="table table-bordered table-striped w-100" id="imposerTable">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -208,7 +202,7 @@
 
         <div class="container mt-5 mb-5">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="dateOfNotice">Date of Notice to Accused:</label>
                         <input type="text" class="form-control" id="dateOfNotice" placeholder="Select Date">

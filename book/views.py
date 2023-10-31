@@ -6,16 +6,107 @@ from .models import (
 )
 from django.http import JsonResponse
 from book.utils.date_formatter import date_formatter2
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from datetime import datetime
+
+import json
+import pytz
+
 
 # @login_required
 def submission_page(request):
     context = {}
-
     return render(request, 'book/submission_page.html', context)
 
 def personnel_violation_page(request):
     context = {}
     return render(request, 'book/submitted_offense_page.html', context)
+
+def offense_by_personnel_page(request):
+    success = False
+    message = ''
+    try:
+        data = json.loads(request.body)
+        print("Received JSON data:", data)
+
+        response = {
+            'success': success,
+            'message': message,
+            'data': data
+        }
+
+        return JsonResponse(response)
+
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}")
+
+# @login_required
+def submit_function(request):
+    success = False
+    message = ''
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        if data:
+            personnel = data.get('personnel')
+            violation = data.get('violation')
+            omission_date = data.get('omission_date')
+            omission_place = data.get('omission_place')
+            punishment = data.get('punishment')
+            imposer = data.get('imposer')
+            date_notice = data.get('date_notice')
+
+            print('\n\n')
+            print(f'RECEIVED PERSONNEL: {personnel}')
+            print(f'RECEIVED VIOLATION: {violation}')
+            print(f'RECEIVED DATE OF OMISSION: {omission_date}')
+            print(f'RECEIVED PLACE OF OMISSION: {omission_place}')
+            print(f'RECEIVED PUNISHMENT: {punishment}')
+            print(f'RECEIVED IMPOSED BY WHOM: {imposer}')
+            print(f'RECEIVED DATE OF NOTICED: {date_notice}')
+            print('\n\n')
+
+            # Convert the string to a timezone-aware datetime object
+            naive_datetime = datetime.strptime(omission_date, '%Y-%m-%d %H:%M:%S')
+            aware_datetime = timezone.make_aware(naive_datetime, timezone=pytz.UTC)
+
+            # Fetch related objects using provided IDs
+            personnel_obj = get_object_or_404(AFP_Personnel, id=personnel[0])  # Assuming only one personnel is selected
+            violation_obj = get_object_or_404(OffenseLibrary,
+                                              id=violation[0])  # Assuming only one violation is selected
+
+            # Create a new PlaceOfOmission instance and save it
+            place_obj = PlaceOfOmission(place=omission_place,
+                                        date=datetime.strptime(omission_date, '%Y-%m-%d %H:%M:%S'))
+            place_obj.save()
+
+            # Create a new Offense instance
+            offense_instance = Offense(
+                personnel=personnel_obj,
+                offense=violation_obj,
+                place=place_obj,
+                entry_date=aware_datetime
+            )
+            offense_instance.save()
+
+            # Add many-to-many relationships
+            for punishment_id in punishment:
+                punishment_obj = get_object_or_404(PunishmentLibrary, id=punishment_id)
+                offense_instance.punishments.add(punishment_obj)
+
+            for imposer_id in imposer:
+                imposer_obj = get_object_or_404(ImposedByWhom, id=imposer_id)
+                offense_instance.imposer.add(imposer_obj)
+
+            success = True
+            message = 'Data processed successfully'
+
+    response = {
+        'success': success,
+        'message': message
+    }
+
+    return JsonResponse(response)
 
 
 # @login_required()
@@ -73,7 +164,7 @@ def get_personnel(request):
     return JsonResponse(response)
 
 
-def get_offense(request):
+def get_violations_dt(request):
     """AJAX request to retrieve the personnel's data."""
     # Define the base queryset
     base_query = OffenseLibrary.objects.all()
@@ -114,14 +205,15 @@ def get_offense(request):
             {
                 'id': item.id,
                 'violation': item.violation,
-                'actions': f'<button type="button" onclick="addViolations({item.id}, {item.violation})" class="btn btn-sm btn-info mr-auto">Use</button>'
+                'actions': f'<button type="button" onclick="addViolations({item.id}, \'{item.violation}\')" class="btn btn-sm btn-info mr-auto">Use</button>'
             } for item in filtered_data
         ]
     }
 
     return JsonResponse(response)
 
-def get_punishments(request):
+
+def get_punishments_dt(request):
     """AJAX request to retrieve the personnel's data."""
     # Define the base queryset
     base_query = PunishmentLibrary.objects.all()
@@ -168,6 +260,7 @@ def get_punishments(request):
     }
 
     return JsonResponse(response)
+
 
 def place_of_omission(request):
     """AJAX request to retrieve the personnel's data."""
@@ -221,6 +314,7 @@ def place_of_omission(request):
 
     return JsonResponse(response)
 
+
 def get_imposed_by_whom_dt(request):
     """AJAX request to retrieve the personnel's data."""
     # Define the base queryset
@@ -270,7 +364,7 @@ def get_imposed_by_whom_dt(request):
     return JsonResponse(response)
 
 
-def get_submitted_offense_dt(request):
+def submitted_offense_dt(request):
     """AJAX request to retrieve the personnel's data."""
     # Define the base queryset
     base_query = Offense.objects.all().order_by('entry_date')
@@ -312,10 +406,12 @@ def get_submitted_offense_dt(request):
         'recordsFiltered': total_records,
         'data': [
             {
-                'personnel': item.personnel,
-                'offense': item.offense,
-                'entry_date': item.entry_date,
-                'actions': f'<button type="button" onclick="refreshSubmittedViolationDt({item.id})" class="btn btn-sm btn-info mr-auto">View</button>'
+                'personnel': str(item.personnel),
+                'offense': str(item.offense),
+                'entry_date': date_formatter2(item.entry_date.strftime("%Y-%m-%dT%H:%M:%S%z")),
+                'actions': f'<button type="button" onclick="" class="btn btn-sm btn-info mr-auto">View</button>',
+                # 'actions': f'<button type="button" onclick="window.location.href=\'{reverse("offense_by_personnel_page", args=[item.id])}\'" class="btn btn-sm btn-info mr-auto">View</button>'
+
             } for item in filtered_data
         ]
     }

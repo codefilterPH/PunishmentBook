@@ -1,4 +1,4 @@
-{% load static %}
+{% load static wagtailcore_tags wagtailuserbar %}
 <html lang="en">
 <head>
     {% block extra_css %}
@@ -12,17 +12,17 @@
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-
-    {% endblock %}
-</head>
-<body>
-{% block content %}
-
-{% endblock %}
-
-{% block extra_js %}
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    {% endblock %}
+</head>
+<body  class="{% block body_class %}{% endblock %}">
+{% wagtailuserbar %}
+
+{% block content %} {% endblock %}
+
+{% block extra_js %}
+
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Moment.js -->
@@ -33,16 +33,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+    <!--UTILS-->
+    <script src="{% static 'js/utils/swal_messages.js' %}"></script>
 
      <!--TABLE-->
+    <script src="{% static 'js/table/load_dt_submitted_violation.js' %}"></script>
     <script src="{% static 'js/table/load_dt_personnel.js' %}"></script>
-    <script src="{% static 'js/table/load_dt_offense.js' %}"></script>
+    <script src="{% static 'js/table/load_dt_violations.js' %}"></script>
     <script src="{% static 'js/table/load_dt_omission.js' %}"></script>
     <script src="{% static 'js/table/load_dt_punishments.js' %}"></script>
     <script src="{% static 'js/table/load_dt_imposed.js' %}"></script>
     <!--PAGES-->
-    <script src="{% static 'js/load_submitted_offense.js' %}"></script>
     <script src="{% static 'js/afp_personnel/manage.js' %}"></script>
+
     <!-- ADDING DATA -->
     <script src="{% static 'js/omission/manage.js' %}"></script>
     <script src="{% static 'js/submission/manage.js' %}"></script>
@@ -56,19 +59,64 @@
         }
 
         $(document).ready(function() {
-            $('#dateOmission').datetimepicker();
+            initSubmittedViolationsDT(); // Page
 
             initializePersonnelDataTable();
-            initializeOffenseDataTable();
+            initializeViolationsDT();
             initializeOmissionDataTable();
-            initializeSubmittedOffenseDT();
+            initializePunishmentDt();
             initializeImposedDt();
 
-            $('#dateOfNotice').datetimepicker();
+            function dtp_settings(customOptions = {}) {
+                let defaultSettings = {
+                    format: 'YYYY-MM-DD HH:mm', // Format of the date and time
+                    minDate: moment().subtract(1, 'years'), // One year ago from today
+                    maxDate: moment(), // Today
+                    defaultDate: moment().subtract(1, 'days'), // Yesterday
+                    stepping: 15, // 15 minute intervals
+                    sideBySide: true // Show date and time side by side
+                };
+
+                // Merge the default settings with any custom options provided
+                return {...defaultSettings, ...customOptions};
+            }
+
+            $('#dateOmission').datetimepicker(dtp_settings());
+
+            $('#dateOfNotice').datetimepicker(dtp_settings());
+
 
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $(".nav-link").click(function(e) {
+                e.preventDefault(); // Prevent the default link behavior
 
+                var linkText = $(this).text().trim();
+
+                switch (linkText) {
+                    case 'Records':
+                        loadContent('{% url "personnel_with_violations" %}');
+                        break;
+                    case 'Submissions':
+                        loadContent('{% url "submission_page" %}');
+                        break;
+                    default:
+                        console.error('Unknown link');
+                }
+            });
+        });
+
+        function loadContent(url) {
+            $("#contentArea").load(url, function(response, status, xhr) {
+                if (status == "error") {
+                    var msg = "Sorry but there was an error: ";
+                    $("#contentArea").html(msg + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 </body>
