@@ -10,8 +10,6 @@ urlpatterns = [
     path('submission-page/', views.submission_page, name='submission_page'),
     path('submitted-offense-dt/', views.submitted_offense_dt, name='submitted_offense_dt'),
 
-
-
     path('submit-violation/', views.submit_function, name='submit_function'),
     path('get-imposed-by-whom-dt/', views.get_imposed_by_whom_dt, name='get_imposed_by_whom_dt'),
     path('get-violations-dt/', views.get_violations_dt, name='get_violations_dt'),

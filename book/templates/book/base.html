@@ -89,7 +89,7 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
+       $(document).ready(function() {
             $(".nav-link").click(function(e) {
                 e.preventDefault(); // Prevent the default link behavior
 
@@ -97,10 +97,10 @@
 
                 switch (linkText) {
                     case 'Records':
-                        loadContent('{% url "all_violation_page" %}');
+                        loadContent('{% url "all_violation_page" %}', '#contentArea');
                         break;
                     case 'Submissions':
-                        loadContent('{% url "submission_page" %}');
+                        loadContent('{% url "submission_page" %}', '#contentArea');
                         break;
                     default:
                         console.error('Unknown link');
@@ -108,14 +108,15 @@
             });
         });
 
-        function loadContent(url) {
-            $("#contentArea").load(url, function(response, status, xhr) {
+        function loadContent(url, targetElement) {
+            $(targetElement).load(url, function(response, status, xhr) {
                 if (status == "error") {
-                    var msg = "Sorry but there was an error: ";
-                    $("#contentArea").html(msg + xhr.status + " " + xhr.statusText);
+                    var msg = "Sorry, but there was an error: ";
+                    $(targetElement).html(msg + xhr.status + " " + xhr.statusText);
                 }
             });
         }
+
     </script>
 {% endblock %}
 
