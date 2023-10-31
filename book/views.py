@@ -75,7 +75,7 @@ def submitted_offense_dt(request):
         'data': [
             {
                 'personnel': str(item.personnel),
-                'offense': str(item.offense),
+                'offense': ', '.join([str(violation) for violation in item.offense.all()]),
                 'entry_date': date_formatter2(item.entry_date.strftime("%Y-%m-%dT%H:%M:%S%z")),
                 'actions': f'<button type="button" onclick="window.location.href=\'{reverse("view_violation_page", args=[item.id])}\'" class="btn btn-sm btn-info mr-auto">View</button>',
                 # 'actions': f'<button type="button" onclick="" class="btn btn-sm btn-info mr-auto">View</button>'
