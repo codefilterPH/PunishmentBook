@@ -28,9 +28,39 @@ def all_violation_page(request):
 
 def view_violation_page(request, pk):
     print(f'Primary Key: {pk}')
-    context = {}
-    return render(request, 'book/view_violation_page.html', context)
 
+    try:
+        # Use get_object_or_404 to retrieve the offense or raise a 404 error if it doesn't exist.
+        offense = get_object_or_404(Offense, id=pk)
+
+        # Access the related personnel using the 'personnel' ForeignKey field.
+        personnel = offense.personnel
+        rank = personnel.rank_id
+        first = personnel.first_name
+        last = personnel.last_name
+        middle = personnel.middle_name
+        afpsn = personnel.afpsn
+
+        # Now you can access the name of the personnel.
+        personnel_name = "{} {} {} {} {}".format(rank, first, middle, last, afpsn)
+        print("Personnel Name:", personnel_name)
+
+        omission = offense.place
+
+        context = {
+            'personnel_name': personnel_name,
+            'violations': offense.offense.all(),
+            'punishments': offense.punishments.all(),
+            'date_of_omission': omission.date,
+            'place_of_omission': omission.place
+        }
+    except Offense.DoesNotExist:
+        # Handle the case where the offense with the given ID does not exist.
+        context = {
+            'error_message': f"Offense with ID {pk} does not exist.",
+        }
+
+    return render(request, 'book/view_violation_page.html', context)
 
 def submitted_offense_dt(request):
     """AJAX request to retrieve the personnel's data."""

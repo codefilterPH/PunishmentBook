@@ -4,6 +4,7 @@ from .models import (
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register, ModelAdminGroup
 )
+from django.utils.html import format_html
 
 
 class OffenseLibraryAdmin(ModelAdmin):
@@ -124,6 +125,16 @@ class OffenseAdmin(ModelAdmin):
 
     display_resolutions.short_description = 'Resolutions'
 
+    def display_date_and_place(self, obj):
+        if obj.place:
+            return format_html(
+                "<strong>Date:</strong> {}<br /><strong>Place:</strong> {}",
+                obj.place.date.strftime("%Y-%m-%d"),
+                obj.place.place
+            )
+        return ""
+
+    display_date_and_place.short_description = "Date and Place"
 
 class ManageBookGroupAdmin(ModelAdminGroup):
     menu_label = "Punishment Book"

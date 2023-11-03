@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from book.utils.date_formatter import date_formatter2
 
 class OffenseLibrary(models.Model):
     violation = models.TextField(blank=False, null=True, help_text='ex: Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)')
@@ -17,11 +18,11 @@ class PlaceOfOmission(models.Model):
     date = models.DateTimeField(default=timezone.now, editable=True)
 
     def __str__(self):
-        return str(self.place)
+        return date_formatter2(str(self.date)) + ' - ' + str(self.place)
 
     class Meta:
-        verbose_name = 'Place of Omission'
-        verbose_name_plural = 'Place of Omission'
+        verbose_name = 'Date & Place of Omission'
+        verbose_name_plural = 'Date & Place of Omission'
 
 class PunishmentLibrary(models.Model):
     punishment = models.CharField(max_length=255)
@@ -44,12 +45,12 @@ class ImposedByWhom(models.Model):
         verbose_name_plural = 'Imposed by Whom'
 
 class Resolution(models.Model):
-    decision_of_appeal = models.TextField(null=True)
-    mitigation_re_remission = models.TextField(null=True)
-    remarks = models.TextField(null=True)
-    date = models.DateTimeField(default=timezone.now)
-    intl_first_sergeant = models.CharField(max_length=250, null=True)
-    initial_of_ep = models.CharField(max_length=50, null=True)
+    decision_of_appeal = models.TextField(blank=True, null=True)
+    mitigation_re_remission = models.TextField(blank=True, null=True)
+    remarks = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now, blank=True,)
+    intl_first_sergeant = models.CharField(max_length=250, blank=True, null=True)
+    initial_of_ep = models.CharField(max_length=50, blank=True, null=True)
 
 
 class AFP_Personnel(models.Model):
@@ -77,7 +78,7 @@ class Offense(models.Model):
     place = models.ForeignKey(PlaceOfOmission, related_name="place_of_omission", on_delete=models.DO_NOTHING)
     punishments = models.ManyToManyField(PunishmentLibrary, related_name="punishment_library")
     imposer = models.ManyToManyField(ImposedByWhom, related_name="imposed_by_whom")
-    resolution = models.ManyToManyField(Resolution, related_name="resolution")
+    resolution = models.ManyToManyField(Resolution, related_name="resolution", blank=True)
     entry_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
