@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import (
+from book.models import (
     AFP_Personnel, OffenseLibrary, PlaceOfOmission, Offense, PunishmentLibrary, ImposedByWhom
 )
 from django.http import JsonResponse
@@ -25,6 +25,64 @@ def all_violation_page(request):
     context = {}
     return render(request, 'book/all_violation_record.html', context)
 
+def get_resolutions(request, pk):
+    offense = get_object_or_404(Offense, id=pk)
+    base_query = offense.resolution.all()
+    # Search term
+    search_term = request.GET.get('search[value]', None)
+    if search_term:
+        base_query = base_query.filter(
+            Q(decision_of_appeal__icontains=search_term) |
+            Q(mitigation_re_remission__icontains=search_term) |
+            Q(remarks__icontains=search_term) |
+            Q(date__icontains=search_term) |
+            Q(intl_first_sergeant__icontains=search_term) |
+            Q(initial_of_ep__icontains=search_term)
+        )
+
+        # Total records
+    total_records = base_query.count()
+
+    # Order by
+    order_column = request.GET.get('order[0][column]', 'date')  # Default to 'date' if not provided
+    order_dir = request.GET.get('order[0][dir]', 'asc')
+    order_columns = ['date', 'decision_of_appeal']  # Add the fields you want to be able to sort by
+
+    # Make sure the order column index is within the range of order_columns
+    order_column_index = int(order_column) if order_column.isdigit() and int(order_column) < len(order_columns) else 0
+    order_field = order_columns[order_column_index]
+
+    if order_dir == 'asc':
+        base_query = base_query.order_by(order_field)
+    else:
+        base_query = base_query.order_by(f'-{order_field}')
+
+    # Page and page length
+    start = int(request.GET.get('start', 0))
+    length = int(request.GET.get('length', 5))
+    end = start + length
+
+    # Get the data for the current page
+    filtered_data = base_query[start:end]
+
+    # Construct the JSON response
+    response = {
+        'draw': int(request.GET.get('draw', 1)),  # Default to 1 if not provided
+        'recordsTotal': total_records,
+        'recordsFiltered': total_records,  # Assuming no additional filtering is done beyond the search term
+        'data': [
+            {
+                'decision_of_appeal': resolution.decision_of_appeal,
+                'mitigation_re_remission': resolution.mitigation_re_remission,
+                'remarks': resolution.remarks,
+                'date': date_formatter2(resolution.date.strftime("%Y-%m-%dT%H:%M:%S%z")),
+                'intl_first_sergeant': resolution.intl_first_sergeant,
+                'initial_of_ep': resolution.initial_of_ep,
+            } for resolution in filtered_data
+        ]
+    }
+
+    return JsonResponse(response)
 
 def view_violation_page(request, pk):
     print(f'Primary Key: {pk}')
@@ -46,13 +104,17 @@ def view_violation_page(request, pk):
         print("Personnel Name:", personnel_name)
 
         omission = offense.place
+        date_accused = offense.entry_date
 
         context = {
+            'pk': pk,
             'personnel_name': personnel_name,
             'violations': offense.offense.all(),
             'punishments': offense.punishments.all(),
             'date_of_omission': omission.date,
-            'place_of_omission': omission.place
+            'place_of_omission': omission.place,
+            'imposed_by_whom': offense.imposer.all(),
+            'date_accused': date_accused
         }
     except Offense.DoesNotExist:
         # Handle the case where the offense with the given ID does not exist.

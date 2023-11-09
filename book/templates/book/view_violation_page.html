@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="row">
+    <div class="row mt-4 mb-4">
         <div class="col-md-4">
             <!-- Image -->
             <img src="{% if person_image %}{{ person_image.url }}{% else %} {% static 'img/soldier.png' %} {% endif %}" alt="Military Profile" class="img-fluid rounded-circle">
@@ -34,13 +34,102 @@
                 <dt class="col-sm-3">Date:</dt>
                 <dd class="col-sm-9">{{ date_of_omission | date:"F d, Y" }}</dd>
                 <dt class="col-sm-3">Place:</dt>
-                <dd class="col-sm-9">{{ place_of_omission.place }}</dd>
+                <dd class="col-sm-9">{{ place_of_omission }}</dd>
             </dl>
 
-            <p class="mt-3"><strong>Imposer:</strong> {{ imposer_name }}</p>
-            <p class="mt-3"><strong>Date Noticed to Accused:</strong> {{ date_notice_info }}</p>
+            <p class="mt-3"><strong>Imposed By Whom: </strong></p>
+            <ul class="list-group">
+                {% for item in imposed_by_whom %}
+                    <li class="list-group-item">{{ item.name }}</li>
+                {% endfor %}
+            </ul>
+
+            <p class="mt-3"><strong>Date Noticed to Accused: </strong> {{ date_accused }}</p>
         </div>
     </div>
+
+    <div class="mt-4 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between flex-wrap">
+                <div class="flex-grow-1"><strong>Resolutions</strong></div>
+                <div class="button-group mt-2 mt-md-0">
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id="submitNew" class="btn btn-primary btn-sm mr-2 mr-md-0 mb-2 mb-md-0" data-toggle="modal" data-target="#submitNewModal">Submit New</button>
+                    <button type="button" id="refreshResolutions" class="btn btn-success btn-sm mb-2 mb-md-0">Refresh</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="submitNewModal" tabindex="-1" aria-labelledby="submitNewModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="submitNewModalLabel">New Resolution</h5>
+                                <button type="button" id="hideModalViewViolation" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <form id="newResolutionForm" method="post" action="">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                              <div class="mb-3">
+                                <label for="decisionOfAppeal" class="form-label">Decision of Appeal</label>
+                                <textarea class="form-control" id="decisionOfAppeal" name="decision_of_appeal" rows="3"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label for="mitigationReRemission" class="form-label">Mitigation Re-Remission</label>
+                                <textarea class="form-control" id="mitigationReRemission" name="mitigation_re_remission" rows="3"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label for="remarks" class="form-label">Remarks</label>
+                                <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="text" class="form-control" id="date" name="date">
+                              </div>
+                              <div class="mb-3">
+                                <label for="intlFirstSergeant" class="form-label">Intl First Sergeant</label>
+                                <input type="text" class="form-control" id="intlFirstSergeant" name="intl_first_sergeant">
+                              </div>
+                              <div class="mb-3">
+                                <label for="initialOfEp" class="form-label">Initial of EP</label>
+                                <input type="text" class="form-control" id="initialOfEp" name="initial_of_ep">
+                              </div>
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" id="closeModalViewViolation" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive pb-3">
+                    <table class="table table-bordered table-striped w-100" id="resolutionDT" data-pk="{{ pk }}">
+                        <thead>
+                            <tr>
+                                <th>Decision of Appeal</th>
+                                <th>Mitigation Re-Remission</th>
+                                <th>Remarks</th>
+                                <th>Date</th>
+                                <th>Intl First Sergeant</th>
+                                <th>Initial of EP</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 {% endblock %}
