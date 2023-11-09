@@ -12,16 +12,16 @@
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
 
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="col-md-4 col-12 order-2 order-md-1">
-                            <h6 class="mb-0">Submitted Violations</h6>
-                        </div>
-                        <div class="col-4 col-md-4 order-1 order-md-2 text-right d-flex flex-column flex-md-row align-items-md-center ml-auto">
-                            <form method="POST" action="{% url 'submission_page' %}" id="formNew">
-                                {% csrf_token %}
-                                <button type="submit" id="btnNew" class="btn btn-primary btn-sm mt-3 mb-2 mb-md-0 mr-md-2">Submit New</button>
-                            </form>
-                            <button type="button" id="btnRefresh" class="btn btn-success btn-sm pt-1">Refresh</button>
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0 flex-grow-1">Submitted Violations</h6>
+                            <div class="button-group mt-2 mt-md-0">
+                                <form method="POST" action="{% url 'submission_page' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" id="btnNew" class="btn btn-primary btn-sm mr-2">Submit New</button>
+                                </form>
+                                <button type="button" id="btnRefresh" class="btn btn-success btn-sm">Refresh</button>
+                            </div>
                         </div>
                     </div>
 
