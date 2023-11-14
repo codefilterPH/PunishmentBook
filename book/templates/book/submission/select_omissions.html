@@ -1,0 +1,38 @@
+<!-- DATE & PLACE OMISSION -->
+        <div class="container mt-5 mb-5 pt-3">
+            <div class="card">
+
+                <div class="card-header d-flex justify-content-end align-items-center">
+                    <h6 class="mb-0 col-md-4 col-12">Date & Place Omission</h6>
+                    <div class="col-md-8 col-12 ml-auto">
+                        <div class="input-group">
+                            <input type="text" id="dateOmission" class="form-control" placeholder="Selected Date" required>
+                            <input type="text" id="placeOmission" class="form-control" placeholder="Selected Place of Omission" required>
+                            <div class="input-group-append">
+                                <button type="button" id="refreshOmission" class="btn btn-success btn-sm">Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped w-100" id="placeOmissionTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Place of Omission</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 mb-4">
+            <button type="button" class="btn btn-primary" id="moveToPrevStep"><i class="fa fa-arrow-left"></i> Previous</button>
+            <button type="button" class="btn btn-primary" id="moveToNextStep"><i class="fa fa-arrow-right"></i> Next</button>
+            <a href="/" class="btn btn-secondary"><i class="fa fa-times"></i> Cancel</a>
+        </div>

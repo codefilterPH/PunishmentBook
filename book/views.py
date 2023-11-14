@@ -139,6 +139,9 @@ def submitted_offense_dt(request):
             Q(offense__violation__icontains=search_term)
         )
 
+    # Need Search by multiple fields
+    # Modal in every row with click functionality
+
     # Total records
     total_records = base_query.count()
 

@@ -1,0 +1,42 @@
+ <!-- BY WHOM IMPOSE -->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label for="imposedByWhomList">By Whom Impose:</label>
+                        <select multiple class="form-control" id="imposedByWhomList" name="imposer" required></select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 col-md-4 col-12">Imposers</h6>
+                            <div class="col-md-8 col-12 d-flex justify-content-end">
+                                <button type="button" id="addImposer" class="btn btn-primary btn-sm mr-2">Add</button>
+                                <button type="button" id="refreshImposerRecords" class="btn btn-success btn-sm">Refresh</button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped w-100" id="imposerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 mb-4">
+            <button type="button" class="btn btn-primary" id="moveToPrevStep"><i class="fa fa-arrow-left"></i> Previous</button>
+            <button type="button" class="btn btn-primary" id="moveToNextStep"><i class="fa fa-arrow-right"></i> Next</button>
+            <a href="/" class="btn btn-secondary"><i class="fa fa-times"></i> Cancel</a>
+        </div>
