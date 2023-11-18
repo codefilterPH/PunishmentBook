@@ -3,14 +3,16 @@ from django.utils import timezone
 from book.utils.date_formatter import date_formatter2
 
 class OffenseLibrary(models.Model):
+    abbreviations = models.CharField(max_length=50, null=True, blank=False, help_text="Enter Abbreviation.")
+    article_number = models.PositiveIntegerField(null=True, blank=False)
     violation = models.TextField(blank=False, null=True, help_text='ex: Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)')
 
     def __str__(self):
         return str(self.violation)
 
     class Meta:
-        verbose_name = 'Offense Library'
-        verbose_name_plural = 'Offense Libraries'
+        verbose_name = 'Article Of War Record'
+        verbose_name_plural = 'Article of War Records'
 
 
 class PlaceOfOmission(models.Model):

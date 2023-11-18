@@ -176,7 +176,8 @@ def submitted_offense_dt(request):
                 # 'actions': f'<button type="button" onclick="" class="btn btn-sm btn-info mr-auto">View</button>'
 
             } for item in filtered_data
-        ]
+        ],
+        'length': length
     }
 
     return JsonResponse(response)

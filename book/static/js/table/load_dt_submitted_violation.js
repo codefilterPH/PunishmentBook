@@ -1,7 +1,10 @@
 
 function initSubmittedViolationsDT() {
-    console.log('AMEN');
     var submittedViolation = $('#submittedViolationDt').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print',
+        ],
         serverSide: true,
         processing: true,
         ajax: {
@@ -13,7 +16,8 @@ function initSubmittedViolationsDT() {
             { data: 'offense' },
             { data: 'entry_date' },
             { data: 'actions' }
-        ]
+        ],
+        lengthMenu: [10, 25, 50, 100],
     });
 
     // Function to refresh the DataTable

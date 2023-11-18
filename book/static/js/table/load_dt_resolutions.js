@@ -1,6 +1,6 @@
 function initializeResolutionsDt() {
     var pk = $('#resolutionDT').data('pk');
-    console.log('View Offense PKey:', pk);  // Output the primary key to the console
+    if (pk) { console.log('View Offense PKey:', pk); }
 
     var resolutionsTable = $('#resolutionDT').DataTable({
         responsive: true,

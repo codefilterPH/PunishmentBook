@@ -16,8 +16,8 @@ class OffenseLibraryAdmin(ModelAdmin):
     can_create = True
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ('violation',)
-    search_fields = ('violation',)
+    list_display = ('abbreviations', 'article_number', 'violation')
+    search_fields = ('abbreviations', 'article_number', 'violation')
 
 
 class PlaceOfOmissionAdmin(ModelAdmin):
