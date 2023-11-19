@@ -6,47 +6,126 @@
 
 {% block content %}
 <div class="container mt-4">
+
+    <!-- TICKET NUMBER COMPONENT -->
+    {% include 'book/header_case_ref/ref.html' %}
+
+    <!-- CASE DETAILS -->
     <div class="row mt-4 mb-4">
         <div class="col-md-4">
             <!-- Image -->
             <img src="{% if person_image %}{{ person_image.url }}{% else %} {% static 'img/soldier.png' %} {% endif %}" alt="Military Profile" class="img-fluid rounded-circle">
         </div>
-        <div class="col-md-8">
-            <!-- Personal Information -->
-            <h4 class="mt-3">{{ personnel_name }}</h4>
 
-            <p class="mt-3"><strong>Violations:</strong></p>
-            <ul class="list-group">
-                {% for offense in violations %}
-                    <li class="list-group-item">{{ offense.violation }}</li>
-                {% endfor %}
-            </ul>
+        <!-- ACCORDION -->
+        <div class="col-md-8 accordion mt-4" id="caseDetailsAccordion">
 
-            <p class="mt-3"><strong>Punishment:</strong></p>
-            <ul class="list-group">
-                {% for item in punishments %}
-                    <li class="list-group-item">{{ item.punishment }}</li>
-                {% endfor %}
-            </ul>
+            <!-- CARD 1: Violations -->
+            <div class="card">
+                <div class="card-header bg-primary text-white" id="violationsHeading">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#violationsCollapse" aria-expanded="true" aria-controls="violationsCollapse">
+                            Article Of War <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </h2>
+                </div>
 
-            <p class="mt-3"><strong>Date and Place:</strong></p>
-            <dl class="row">
-                <dt class="col-sm-3">Date:</dt>
-                <dd class="col-sm-9">{{ date_of_omission | date:"F d, Y" }}</dd>
-                <dt class="col-sm-3">Place:</dt>
-                <dd class="col-sm-9">{{ place_of_omission }}</dd>
-            </dl>
+                <div id="violationsCollapse" class="collapse show" aria-labelledby="violationsHeading" data-parent="#caseDetailsAccordion">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for item in article_of_war %}
+                                <li class="list-group-item">{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-            <p class="mt-3"><strong>Imposed By Whom: </strong></p>
-            <ul class="list-group">
-                {% for item in imposed_by_whom %}
-                    <li class="list-group-item">{{ item.name }}</li>
-                {% endfor %}
-            </ul>
+            <!-- CARD 2: Punishments -->
+            <div class="card">
+                <div class="card-header bg-primary text-white" id="punishmentsHeading">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#punishmentsCollapse" aria-expanded="false" aria-controls="punishmentsCollapse">
+                            Punishments <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </h2>
+                </div>
 
-            <p class="mt-3"><strong>Date Noticed to Accused: </strong> {{ date_accused }}</p>
+                <div id="punishmentsCollapse" class="collapse" aria-labelledby="punishmentsHeading" data-parent="#caseDetailsAccordion">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for item in punishments %}
+                                <li class="list-group-item">{{ item.punishment }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3: Date and Place -->
+            <div class="card">
+                <div class="card-header bg-primary text-white" id="datePlaceHeading">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#datePlaceCollapse" aria-expanded="false" aria-controls="datePlaceCollapse">
+                            Date and Place <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="datePlaceCollapse" class="collapse" aria-labelledby="datePlaceHeading" data-parent="#caseDetailsAccordion">
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Date:</dt>
+                            <dd class="col-sm-9">{{ date_of_omission | date:"F d, Y" }}</dd>
+                            <dt class="col-sm-3">Place:</dt>
+                            <dd class="col-sm-9">{{ place_of_omission }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 4: Imposed By Whom -->
+            <div class="card">
+                <div class="card-header bg-primary text-white" id="imposedByWhomHeading">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#imposedByWhomCollapse" aria-expanded="false" aria-controls="imposedByWhomCollapse">
+                            Imposed By Whom <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="imposedByWhomCollapse" class="collapse" aria-labelledby="imposedByWhomHeading" data-parent="#caseDetailsAccordion">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for item in imposed_by_whom %}
+                                <li class="list-group-item">{{ item.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 5: Date Noticed to Accused -->
+            <div class="card">
+                <div class="card-header bg-primary text-white" id="dateNoticedHeading">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#dateNoticedCollapse" aria-expanded="false" aria-controls="dateNoticedCollapse">
+                            Date Noticed to Accused <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="dateNoticedCollapse" class="collapse" aria-labelledby="dateNoticedHeading" data-parent="#caseDetailsAccordion">
+                    <div class="card-body">
+                        <p class="mt-3">{{ date_accused }}</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <!-- RESOLUTION TABLE -->
 
     <div class="mt-4 mb-4">
         <div class="card">
@@ -60,51 +139,58 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="submitNewModal" tabindex="-1" aria-labelledby="submitNewModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
 
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="submitNewModalLabel">New Resolution</h5>
-                                <button type="button" id="hideModalViewViolation" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="submitNewModalLabel">New Resolution</h5>
+                                    <button type="button" id="hideModalViewViolation" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <form id="newResolutionForm" method="post" action="">
+                                {% csrf_token %}
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="dateResolution" class="form-label">Date</label>
+                                        <input type="text" class="form-control" id="dateResolution" name="date" autocomplete="off">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="decisionOfAppeal" class="form-label">Decision of Appeal</label>
+                                        <textarea class="form-control" id="decisionOfAppeal" name="decision_of_appeal" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mitigationReRemission" class="form-label">Mitigation Re-Remission</label>
+                                        <textarea class="form-control" id="mitigationReRemission" name="mitigation_re_remission" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="intlFirstSergeant" class="form-label">Intl First Sergeant</label>
+                                        <input type="text" class="form-control" id="intlFirstSergeant" name="intl_first_sergeant">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="initialOfEp" class="form-label">Initial of EP</label>
+                                        <input type="text" class="form-control" id="initialOfEp" name="initial_of_ep">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="remarks" class="form-label">Remarks</label>
+                                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" id="closeModalViewViolation" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                              </form>
+
                             </div>
-
-                            <form id="newResolutionForm" method="post" action="">
-                            {% csrf_token %}
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label for="decisionOfAppeal" class="form-label">Decision of Appeal</label>
-                                <textarea class="form-control" id="decisionOfAppeal" name="decision_of_appeal" rows="3"></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label for="mitigationReRemission" class="form-label">Mitigation Re-Remission</label>
-                                <textarea class="form-control" id="mitigationReRemission" name="mitigation_re_remission" rows="3"></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label for="remarks" class="form-label">Remarks</label>
-                                <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
-                              </div>
-                              <div class="mb-3">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="text" class="form-control" id="date" name="date">
-                              </div>
-                              <div class="mb-3">
-                                <label for="intlFirstSergeant" class="form-label">Intl First Sergeant</label>
-                                <input type="text" class="form-control" id="intlFirstSergeant" name="intl_first_sergeant">
-                              </div>
-                              <div class="mb-3">
-                                <label for="initialOfEp" class="form-label">Initial of EP</label>
-                                <input type="text" class="form-control" id="initialOfEp" name="initial_of_ep">
-                              </div>
-                            </div>
-
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" id="closeModalViewViolation" data-bs-dismiss="modal">Close</button>
-                              <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                          </form>
-
                         </div>
-                      </div>
                     </div>
                 </div>
             </div>
@@ -114,20 +200,24 @@
                     <table class="table table-bordered table-striped w-100" id="resolutionDT" data-pk="{{ pk }}">
                         <thead>
                             <tr>
+                                <th>Date</th>
                                 <th>Decision of Appeal</th>
                                 <th>Mitigation Re-Remission</th>
-                                <th>Remarks</th>
-                                <th>Date</th>
                                 <th>Intl First Sergeant</th>
                                 <th>Initial of EP</th>
+                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody class="text-center"></tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
+
+    <!-- FILE UPLOADING SECTION -->
+    {% include 'book/file_uploading/upload.html' %}
 
 
 </div>

@@ -1,0 +1,17 @@
+<!-- TICKET NUMBER HEADER -->
+<div class="container mt-4 mb-4">
+    <div class="row rounded" style="height: 20vh; background-color: #f4f4f4;">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-start">
+            <h1 class="mb-0 pl-3">CASE REF:
+                <span class="ticket-number">
+                    {% if case_number %}
+                        {{ case_number }}
+                    {% else %}
+                        123456
+                    {% endif %}
+                </span>
+            </h1>
+            <h4 class="mt-2 pl-3">{{ personnel_name }}</h4>
+        </div>
+    </div>
+</div>

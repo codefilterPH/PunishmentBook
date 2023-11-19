@@ -2,13 +2,28 @@ from django.db import models
 from django.utils import timezone
 from book.utils.date_formatter import date_formatter2
 
+
 class OffenseLibrary(models.Model):
+    """Model to store information about offenses."""
     abbreviations = models.CharField(max_length=50, null=True, blank=False, help_text="Enter Abbreviation.")
     article_number = models.PositiveIntegerField(null=True, blank=False)
-    violation = models.TextField(blank=False, null=True, help_text='ex: Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)')
+    violation = models.TextField(blank=False, null=True,
+                                 help_text='ex: Violation of R.A 7877 (Anti-Sexual Harassment Act of 1995) and R.A 11313 (Safe Spaces Act)')
+
+    def concatenate_variables(self):
+        """Concatenate article number and violation for display."""
+        try:
+            if self.article_number and self.violation:
+                return str(self.article_number) + " - " + str(self.violation)
+            else:
+                return str(self.violation)
+        except Exception as ex:
+            print(f'An error occurred adding article number and violation: {str(ex)}')
+            return str(self.violation)
 
     def __str__(self):
-        return str(self.violation)
+        """Return a string representation of the instance."""
+        return self.concatenate_variables()
 
     class Meta:
         verbose_name = 'Article Of War Record'
@@ -47,12 +62,12 @@ class ImposedByWhom(models.Model):
         verbose_name_plural = 'Imposed by Whom'
 
 class Resolution(models.Model):
+    date = models.DateTimeField(default=timezone.now, blank=True)
     decision_of_appeal = models.TextField(blank=True, null=True)
     mitigation_re_remission = models.TextField(blank=True, null=True)
-    remarks = models.TextField(blank=True, null=True)
-    date = models.DateTimeField(default=timezone.now, blank=True,)
     intl_first_sergeant = models.CharField(max_length=250, blank=True, null=True)
     initial_of_ep = models.CharField(max_length=50, blank=True, null=True)
+    remarks = models.TextField(blank=True, null=True)
 
 
 class AFP_Personnel(models.Model):
@@ -77,10 +92,10 @@ class Offense(models.Model):
     objects = None
     personnel = models.ForeignKey(AFP_Personnel, related_name="afp_personnel", on_delete=models.DO_NOTHING, null=True)
     offense = models.ManyToManyField(OffenseLibrary, related_name="offense_library")
-    place = models.ForeignKey(PlaceOfOmission, related_name="place_of_omission", on_delete=models.DO_NOTHING)
+    place = models.ForeignKey(PlaceOfOmission, related_name="place_of_omission", on_delete=models.DO_NOTHING, null=True)
     punishments = models.ManyToManyField(PunishmentLibrary, related_name="punishment_library")
     imposer = models.ManyToManyField(ImposedByWhom, related_name="imposed_by_whom")
-    resolution = models.ManyToManyField(Resolution, related_name="resolution", blank=True)
+    resolution = models.ForeignKey(Resolution, on_delete=models.CASCADE, null=True)
     entry_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

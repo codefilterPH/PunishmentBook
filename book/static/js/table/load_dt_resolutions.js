@@ -11,12 +11,12 @@ function initializeResolutionsDt() {
             type: 'GET',
         },
         columns: [
+            { data: 'date' },
             { data: 'decision_of_appeal' },
             { data: 'mitigation_re_remission' },
-            { data: 'remarks' },
-            { data: 'date' },
             { data: 'intl_first_sergeant' },
-            { data: 'initial_of_ep' }
+            { data: 'initial_of_ep' },
+            { data: 'remarks' }
         ]
     });
 

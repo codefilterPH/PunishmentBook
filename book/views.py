@@ -26,36 +26,34 @@ def all_violation_page(request):
     return render(request, 'book/all_violation_record.html', context)
 
 def get_resolutions(request, pk):
+    """Show list of resolution convert the table to list"""
     offense = get_object_or_404(Offense, id=pk)
-    base_query = offense.resolution.all()
+    base_query = [offense.resolution]
+
     # Search term
     search_term = request.GET.get('search[value]', None)
-    if search_term:
-        base_query = base_query.filter(
-            Q(decision_of_appeal__icontains=search_term) |
-            Q(mitigation_re_remission__icontains=search_term) |
-            Q(remarks__icontains=search_term) |
-            Q(date__icontains=search_term) |
-            Q(intl_first_sergeant__icontains=search_term) |
-            Q(initial_of_ep__icontains=search_term)
-        )
 
-        # Total records
-    total_records = base_query.count()
+    # Filter based on search term
+    if search_term:
+        base_query = [res for res in base_query if
+                      any(str(value) for value in [res.date, res.decision_of_appeal, res.mitigation_re_remission,
+                                                  res.intl_first_sergeant, res.initial_of_ep, res.remarks]
+                          if value and search_term.lower() in str(value).lower())]
+
+    # Total records
+    total_records = len(base_query)
 
     # Order by
-    order_column = request.GET.get('order[0][column]', 'date')  # Default to 'date' if not provided
+    order_column = request.GET.get('order[0][column]', 0)  # Default to 0 if not provided
     order_dir = request.GET.get('order[0][dir]', 'asc')
-    order_columns = ['date', 'decision_of_appeal']  # Add the fields you want to be able to sort by
+    order_columns = ['date', 'decision_of_appeal', 'mitigation_re_remission', 'intl_first_sergeant', 'initial_of_ep', 'remarks']
 
     # Make sure the order column index is within the range of order_columns
     order_column_index = int(order_column) if order_column.isdigit() and int(order_column) < len(order_columns) else 0
     order_field = order_columns[order_column_index]
 
-    if order_dir == 'asc':
-        base_query = base_query.order_by(order_field)
-    else:
-        base_query = base_query.order_by(f'-{order_field}')
+    if order_dir == 'desc':
+        base_query.reverse()
 
     # Page and page length
     start = int(request.GET.get('start', 0))
@@ -65,26 +63,30 @@ def get_resolutions(request, pk):
     # Get the data for the current page
     filtered_data = base_query[start:end]
 
-    # Construct the JSON response
     response = {
-        'draw': int(request.GET.get('draw', 1)),  # Default to 1 if not provided
+        'draw': int(request.GET.get('draw', 1)),
         'recordsTotal': total_records,
-        'recordsFiltered': total_records,  # Assuming no additional filtering is done beyond the search term
+        'recordsFiltered': total_records,
         'data': [
             {
-                'decision_of_appeal': resolution.decision_of_appeal,
-                'mitigation_re_remission': resolution.mitigation_re_remission,
-                'remarks': resolution.remarks,
-                'date': date_formatter2(resolution.date.strftime("%Y-%m-%dT%H:%M:%S%z")),
-                'intl_first_sergeant': resolution.intl_first_sergeant,
-                'initial_of_ep': resolution.initial_of_ep,
-            } for resolution in filtered_data
+                'date': date_formatter2(res.date.strftime("%Y-%m-%dT%H:%M:%S%z")) if res else None,
+                'decision_of_appeal': res.decision_of_appeal if res else None,
+                'mitigation_re_remission': res.mitigation_re_remission if res else None,
+                'intl_first_sergeant': res.intl_first_sergeant if res else None,
+                'initial_of_ep': res.initial_of_ep if res else None,
+                'remarks': res.remarks if res else None,
+            } for res in filtered_data
         ]
     }
 
     return JsonResponse(response)
 
+
+def submit_resolution(request, pk):
+    pass
+
 def view_violation_page(request, pk):
+    """When user select one of the submitted case this will render"""
     print(f'Primary Key: {pk}')
 
     try:
@@ -106,10 +108,12 @@ def view_violation_page(request, pk):
         omission = offense.place
         date_accused = offense.entry_date
 
+        violations = offense.offense.all()
+        print(violations)
         context = {
             'pk': pk,
             'personnel_name': personnel_name,
-            'violations': offense.offense.all(),
+            'article_of_war': violations,
             'punishments': offense.punishments.all(),
             'date_of_omission': omission.date,
             'place_of_omission': omission.place,
@@ -173,8 +177,6 @@ def submitted_offense_dt(request):
                 'offense': ', '.join([str(violation) for violation in item.offense.all()]),
                 'entry_date': date_formatter2(item.entry_date.strftime("%Y-%m-%dT%H:%M:%S%z")),
                 'actions': f'<button type="button" onclick="window.location.href=\'{reverse("view_violation_page", args=[item.id])}\'" class="btn btn-sm btn-info mr-auto">View</button>',
-                # 'actions': f'<button type="button" onclick="" class="btn btn-sm btn-info mr-auto">View</button>'
-
             } for item in filtered_data
         ],
         'length': length

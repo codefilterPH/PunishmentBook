@@ -1,10 +1,10 @@
 
 function initSubmittedViolationsDT() {
     var submittedViolation = $('#submittedViolationDt').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print',
-        ],
+//        dom: 'Bfrtip',
+//        buttons: [
+//            'copy', 'csv', 'excel', 'pdf', 'print',
+//        ],
         serverSide: true,
         processing: true,
         ajax: {
