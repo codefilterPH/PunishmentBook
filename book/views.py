@@ -2,18 +2,16 @@ from django.shortcuts import render
 # from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from book.models import (
-    AFP_Personnel, OffenseLibrary, PlaceOfOmission, Offense, PunishmentLibrary, ImposedByWhom
+    AFP_Personnel, OffenseLibrary, PlaceOfOmission,
+    Offense, PunishmentLibrary, ImposedByWhom,
+    Resolution
 )
 from django.http import JsonResponse
-from book.utils.date_formatter import date_formatter2
+from book.utils.date_formatter import DateFormatter
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from datetime import datetime
 from django.urls import reverse
 
 import json
-import pytz
-
 
 # @login_required
 def submission_page(request):
@@ -24,6 +22,7 @@ def submission_page(request):
 def all_violation_page(request):
     context = {}
     return render(request, 'book/all_violation_record.html', context)
+
 
 def get_resolutions(request, pk):
     """Show list of resolution convert the table to list"""
@@ -37,7 +36,7 @@ def get_resolutions(request, pk):
     if search_term:
         base_query = [res for res in base_query if
                       any(str(value) for value in [res.date, res.decision_of_appeal, res.mitigation_re_remission,
-                                                  res.intl_first_sergeant, res.initial_of_ep, res.remarks]
+                                                   res.intl_first_sergeant, res.initial_of_ep, res.remarks]
                           if value and search_term.lower() in str(value).lower())]
 
     # Total records
@@ -46,10 +45,12 @@ def get_resolutions(request, pk):
     # Order by
     order_column = request.GET.get('order[0][column]', 0)  # Default to 0 if not provided
     order_dir = request.GET.get('order[0][dir]', 'asc')
-    order_columns = ['date', 'decision_of_appeal', 'mitigation_re_remission', 'intl_first_sergeant', 'initial_of_ep', 'remarks']
+    order_columns = ['date', 'decision_of_appeal', 'mitigation_re_remission', 'intl_first_sergeant', 'initial_of_ep',
+                     'remarks']
 
     # Make sure the order column index is within the range of order_columns
-    order_column_index = int(order_column) if order_column.isdigit() and int(order_column) < len(order_columns) else 0
+    order_column_index = int(order_column) if str(order_column).isdigit() and int(order_column) < len(
+        order_columns) else 0
     order_field = order_columns[order_column_index]
 
     if order_dir == 'desc':
@@ -69,7 +70,7 @@ def get_resolutions(request, pk):
         'recordsFiltered': total_records,
         'data': [
             {
-                'date': date_formatter2(res.date.strftime("%Y-%m-%dT%H:%M:%S%z")) if res else None,
+                'date': DateFormatter(res.date.strftime("%Y-%m-%dT%H:%M:%S%z")).date_formatter2() if res else None,
                 'decision_of_appeal': res.decision_of_appeal if res else None,
                 'mitigation_re_remission': res.mitigation_re_remission if res else None,
                 'intl_first_sergeant': res.intl_first_sergeant if res else None,
@@ -83,7 +84,60 @@ def get_resolutions(request, pk):
 
 
 def submit_resolution(request, pk):
-    pass
+    success = False
+    message = ''
+
+    if request.method == 'POST':
+        if not pk:
+            message = 'Primary Key while submitting resolution is none!'
+        else:
+            try:
+                data = json.loads(request.body)
+
+                date = data.get('date')
+                dec_appeal = data.get('dec_appeal')
+                mitigation_remission = data.get('mitigation_remission')
+                intl_first_sergeant = data.get('intl_first_sergeant')
+                initial_of_ep = data.get('initial_of_ep')
+                remarks = data.get('remarks')
+
+                # Create an instance of the Resolution model
+                resolution_instance = Resolution(
+                    date=DateFormatter(date, '%Y-%m-%d %H:%M').format_date_make_aware(),
+                    decision_of_appeal=dec_appeal,
+                    mitigation_re_remission=mitigation_remission,
+                    intl_first_sergeant=intl_first_sergeant,
+                    initial_of_ep=initial_of_ep,
+                    remarks=remarks
+                )
+
+                # Save the instance to the database
+                resolution_instance.save()
+
+                # Get the offense instance using the provided pk
+                offense_instance = get_object_or_404(Offense, pk=pk)
+
+                # Update the offense with the resolution
+                offense_instance.resolution = resolution_instance
+
+                # Save the offense instance to the database
+                offense_instance.save()
+
+                success = True
+                message = 'Data processed and saved successfully'
+
+            except json.JSONDecodeError:
+                message = 'Invalid JSON data'
+            except Exception as e:
+                message = f'Error: {str(e)}'
+
+    response = {
+        'success': success,
+        'message': message
+    }
+
+    return JsonResponse(response)
+
 
 def view_violation_page(request, pk):
     """When user select one of the submitted case this will render"""
@@ -127,6 +181,7 @@ def view_violation_page(request, pk):
         }
 
     return render(request, 'book/view_violation_page.html', context)
+
 
 def submitted_offense_dt(request):
     """AJAX request to retrieve the personnel's data."""
@@ -175,7 +230,7 @@ def submitted_offense_dt(request):
             {
                 'personnel': str(item.personnel),
                 'offense': ', '.join([str(violation) for violation in item.offense.all()]),
-                'entry_date': date_formatter2(item.entry_date.strftime("%Y-%m-%dT%H:%M:%S%z")),
+                'entry_date': DateFormatter(item.entry_date.strftime("%Y-%m-%dT%H:%M:%S%z")).date_formatter2(),
                 'actions': f'<button type="button" onclick="window.location.href=\'{reverse("view_violation_page", args=[item.id])}\'" class="btn btn-sm btn-info mr-auto">View</button>',
             } for item in filtered_data
         ],
@@ -200,13 +255,10 @@ def submit_function(request):
             imposer = data.get('imposer')
             date_notice = data.get('date_notice')
 
-            # Convert the string to a timezone-aware datetime object
-            naive_datetime = datetime.strptime(omission_date, '%Y-%m-%d %H:%M:%S')
-            omission_date = timezone.make_aware(naive_datetime, timezone=pytz.UTC)
+            omission_date = DateFormatter(omission_date, '%Y-%m-%d %H:%M:%S').format_date_make_aware()
 
             # Fetch related objects using provided IDs
-            violation_obj = get_object_or_404(OffenseLibrary,
-                                              id=violation[0])  # Assuming only one violation is selected
+            violation_obj = get_object_or_404(OffenseLibrary, id=violation[0])
 
             # Get or create a PlaceOfOmission instance
             place_obj, created = PlaceOfOmission.objects.get_or_create(
@@ -219,8 +271,7 @@ def submit_function(request):
             )
 
             # Convert the date_notice string to a timezone-aware datetime object
-            naive_datetime_notice = datetime.strptime(date_notice, '%Y-%m-%d %H:%M')
-            aware_date_notice = timezone.make_aware(naive_datetime_notice, timezone=pytz.UTC)
+            aware_date_notice = DateFormatter(date_notice, '%Y-%m-%d %H:%M').format_date_make_aware()
 
             for personnel_id in personnel_list:
                 personnel_obj = get_object_or_404(AFP_Personnel, id=personnel_id)
@@ -448,9 +499,9 @@ def place_of_omission(request):
         'data': [
             {
                 'place': item.place,
-                'date': date_formatter2(item.date.strftime("%Y-%m-%dT%H:%M:%S%z")),
+                'date': DateFormatter(item.date.strftime("%Y-%m-%dT%H:%M:%S%z")).date_formatter2(),
                 'actions': f"""<button type="button" onclick="addDatePlaceOmission(
-                        {item.id}, \'{date_formatter2(item.date.strftime("%Y-%m-%dT%H:%M:%S%z"))}\', 
+                        {item.id}, \'{DateFormatter(item.date.strftime("%Y-%m-%dT%H:%M:%S%z")).date_formatter2()}\', 
                         \'{item.place}\')" class="btn btn-sm btn-info">Use</button>
                 """
             } for item in filtered_data

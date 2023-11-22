@@ -1,0 +1,14 @@
+.accordion-properties {
+    background-color: #f8f9fa;
+    /* Add any other styles you want for the card header here */
+}
+
+/* Additional styles for text color and icon color */
+.text-white {
+    color: #030303; /* White text color */
+}
+
+/* If you want to adjust the icon color */
+.text-white .fas {
+    color: #FFFFFF; /* White icon color */
+}

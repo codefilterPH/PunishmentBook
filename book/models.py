@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from book.utils.date_formatter import date_formatter2
+from book.utils.date_formatter import DateFormatter
 
 
 class OffenseLibrary(models.Model):
@@ -35,7 +35,7 @@ class PlaceOfOmission(models.Model):
     date = models.DateTimeField(default=timezone.now, editable=True)
 
     def __str__(self):
-        return date_formatter2(str(self.date)) + ' - ' + str(self.place)
+        return DateFormatter(str(self.date) + ' - ' + str(self.place)).date_formatter2()
 
     class Meta:
         verbose_name = 'Date & Place of Omission'
@@ -62,12 +62,16 @@ class ImposedByWhom(models.Model):
         verbose_name_plural = 'Imposed by Whom'
 
 class Resolution(models.Model):
+    object = None
     date = models.DateTimeField(default=timezone.now, blank=True)
     decision_of_appeal = models.TextField(blank=True, null=True)
     mitigation_re_remission = models.TextField(blank=True, null=True)
     intl_first_sergeant = models.CharField(max_length=250, blank=True, null=True)
     initial_of_ep = models.CharField(max_length=50, blank=True, null=True)
     remarks = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Resolution {self.id}"
 
 
 class AFP_Personnel(models.Model):
@@ -95,7 +99,7 @@ class Offense(models.Model):
     place = models.ForeignKey(PlaceOfOmission, related_name="place_of_omission", on_delete=models.DO_NOTHING, null=True)
     punishments = models.ManyToManyField(PunishmentLibrary, related_name="punishment_library")
     imposer = models.ManyToManyField(ImposedByWhom, related_name="imposed_by_whom")
-    resolution = models.ForeignKey(Resolution, on_delete=models.CASCADE, null=True)
+    resolution = models.ManyToManyField(Resolution, related_name="resolution")
     entry_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

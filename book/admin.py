@@ -71,10 +71,29 @@ class ResolutionAdmin(ModelAdmin):
     can_create = True
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ('decision_of_appeal', 'mitigation_re_remission', 'remarks', 'date', 'intl_first_sergeant', 'initial_of_ep')
-    list_filter = ('decision_of_appeal', 'date')
-    search_fields = ('decision_of_appeal', 'intl_first_sergeant')
 
+    def get_queryset(self, request):
+        # Override the queryset to filter resolutions based on associated offense
+        qs = super().get_queryset(request)
+        return qs.filter(offense__isnull=False)
+
+    def display_resolutions(self, obj):
+        # Custom method to display related offenses in the admin
+        offenses = obj.offense_set.all()  # Assuming ManyToManyField is used in Offense model
+
+        if offenses.exists():
+            return ", ".join(str(offense) for offense in offenses)
+        else:
+            return "No offenses"
+
+    display_resolutions.short_description = 'Related Offenses'
+
+    list_display = (
+        'date', 'decision_of_appeal', 'mitigation_re_remission',
+        'intl_first_sergeant', 'initial_of_ep', 'remarks', 'display_resolutions'
+    )
+    list_filter = ('decision_of_appeal', 'date')  # Update to match your Offense model field
+    search_fields = ('date', 'decision_of_appeal', 'intl_first_sergeant', 'offense__name')
 
 class AFPPersonnelAdmin(ModelAdmin):
     model = AFP_Personnel
@@ -121,9 +140,11 @@ class OffenseAdmin(ModelAdmin):
     display_imposers.short_description = 'Imposers'
 
     def display_resolutions(self, obj):
-        return ", ".join([str(r.date) for r in obj.resolution.all()])
+        # Custom method to display the resolution for each offense
+        resolution = obj.resolution
+        return str(resolution.date) if resolution else "No resolution"
 
-    display_resolutions.short_description = 'Resolutions'
+    display_resolutions.short_description = 'Resolution'
 
     def display_date_and_place(self, obj):
         if obj.place:

@@ -16,5 +16,6 @@ urlpatterns = [
     path('get-punishments-dt/', views.get_punishments_dt, name='get_punishments_dt'),
     path('get-personnel/', views.get_personnel, name='get_personnel'),
     path('get-place-omission/', views.place_of_omission, name='place_of_omission'),
-    path('get-resolutions/<int:pk>/', views.get_resolutions, name='place_of_omission'),
+    path('get-resolutions/<int:pk>/', views.get_resolutions, name='get-resolutions'),
+    path('submit-resolution/<int:pk>/', views.submit_resolution, name='submit_resolution'),
 ]

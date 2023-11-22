@@ -1,15 +1,19 @@
 <div class="container mt-5">
     <h2 class="mb-4">File Upload</h2>
-
     <!-- File Upload Section -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-12 col-md-6 col-lg-6">
             <form action="#" method="post" enctype="multipart/form-data">
-                <div class="custom-file mb-3">
-                    <input type="file" class="custom-file-input" id="fileInput" name="file" required>
-                    <label class="custom-file-label" for="fileInput">Choose file</label>
+                {% csrf_token %}
+                <div class="input-group mb-3 flex-nowrap w-100">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="fileInput" name="file" required>
+                        <label class="custom-file-label w-100" for="fileInput">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary w-100">Upload</button>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
             </form>
         </div>
     </div>

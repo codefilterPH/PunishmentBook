@@ -22,10 +22,11 @@
 
             <!-- CARD 1: Violations -->
             <div class="card">
-                <div class="card-header bg-primary text-white" id="violationsHeading">
+                <div class="card-header accordion-properties" id="violationsHeading">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#violationsCollapse" aria-expanded="true" aria-controls="violationsCollapse">
-                            Article Of War <i class="fas fa-chevron-down"></i>
+                        <button class="btn btn-link text-dark w-100 d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#violationsCollapse" aria-expanded="true" aria-controls="violationsCollapse">
+                            <span>Article Of War</span>
+                            <i class="fas fa-chevron-down"></i>
                         </button>
                     </h2>
                 </div>
@@ -43,9 +44,9 @@
 
             <!-- CARD 2: Punishments -->
             <div class="card">
-                <div class="card-header bg-primary text-white" id="punishmentsHeading">
+                <div class="card-header accordion-properties" id="punishmentsHeading">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#punishmentsCollapse" aria-expanded="false" aria-controls="punishmentsCollapse">
+                        <button class="btn btn-link text-dark w-100 d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#punishmentsCollapse" aria-expanded="false" aria-controls="punishmentsCollapse">
                             Punishments <i class="fas fa-chevron-down"></i>
                         </button>
                     </h2>
@@ -64,9 +65,9 @@
 
             <!-- CARD 3: Date and Place -->
             <div class="card">
-                <div class="card-header bg-primary text-white" id="datePlaceHeading">
+                <div class="card-header accordion-properties" id="datePlaceHeading">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#datePlaceCollapse" aria-expanded="false" aria-controls="datePlaceCollapse">
+                        <button class="btn btn-link text-dark d-flex w-100 justify-content-between" type="button" data-toggle="collapse" data-target="#datePlaceCollapse" aria-expanded="false" aria-controls="datePlaceCollapse">
                             Date and Place <i class="fas fa-chevron-down"></i>
                         </button>
                     </h2>
@@ -86,9 +87,9 @@
 
             <!-- CARD 4: Imposed By Whom -->
             <div class="card">
-                <div class="card-header bg-primary text-white" id="imposedByWhomHeading">
+                <div class="card-header accordion-properties" id="imposedByWhomHeading">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#imposedByWhomCollapse" aria-expanded="false" aria-controls="imposedByWhomCollapse">
+                        <button class="btn btn-link text-dark d-flex w-100 justify-content-between" type="button" data-toggle="collapse" data-target="#imposedByWhomCollapse" aria-expanded="false" aria-controls="imposedByWhomCollapse">
                             Imposed By Whom <i class="fas fa-chevron-down"></i>
                         </button>
                     </h2>
@@ -107,9 +108,9 @@
 
             <!-- CARD 5: Date Noticed to Accused -->
             <div class="card">
-                <div class="card-header bg-primary text-white" id="dateNoticedHeading">
+                <div class="card-header accordion-properties" id="dateNoticedHeading">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#dateNoticedCollapse" aria-expanded="false" aria-controls="dateNoticedCollapse">
+                        <button class="btn btn-link text-dark d-flex w-100 justify-content-between" type="button" data-toggle="collapse" data-target="#dateNoticedCollapse" aria-expanded="false" aria-controls="dateNoticedCollapse">
                             Date Noticed to Accused <i class="fas fa-chevron-down"></i>
                         </button>
                     </h2>
@@ -147,51 +148,49 @@
                                     <button type="button" id="hideModalViewViolation" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
-                                <form id="newResolutionForm" method="post" action="">
-                                {% csrf_token %}
-                                <div class="modal-body">
+                                <form id="newResolutionForm" method="post" action="{% url 'submit_resolution' pk  %}">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="dateResolution" class="form-label">Date</label>
+                                            <input type="text" class="form-control" id="dateResolution" name="date" autocomplete="off" required>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="dateResolution" class="form-label">Date</label>
-                                        <input type="text" class="form-control" id="dateResolution" name="date" autocomplete="off">
+                                        <div class="mb-3">
+                                            <label for="decisionOfAppeal" class="form-label">Decision of Appeal</label>
+                                            <textarea class="form-control" id="decisionOfAppeal" name="decision_of_appeal" rows="3" required></textarea>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="mitigationRemission" class="form-label">Mitigation Re-Remission</label>
+                                            <textarea class="form-control" id="mitigationRemission" name="mitigation_remission" rows="3" required></textarea>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="intlFirstSergeant" class="form-label">Intl First Sergeant</label>
+                                            <input type="text" class="form-control" id="intlFirstSergeant" name="intl_first_sergeant" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="initialOfEp" class="form-label">Initial of EP</label>
+                                            <input type="text" class="form-control" id="initialOfEp" name="initial_of_ep" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="remarks" class="form-label">Remarks</label>
+                                            <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                                        </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="decisionOfAppeal" class="form-label">Decision of Appeal</label>
-                                        <textarea class="form-control" id="decisionOfAppeal" name="decision_of_appeal" rows="3"></textarea>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" id="closeModalViewViolation" data-bs-dismiss="modal">Close</button>
+                                      <button id="btnSubmitResolution" type="submit" class="btn btn-primary">Submit</button>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="mitigationReRemission" class="form-label">Mitigation Re-Remission</label>
-                                        <textarea class="form-control" id="mitigationReRemission" name="mitigation_re_remission" rows="3"></textarea>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="intlFirstSergeant" class="form-label">Intl First Sergeant</label>
-                                        <input type="text" class="form-control" id="intlFirstSergeant" name="intl_first_sergeant">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="initialOfEp" class="form-label">Initial of EP</label>
-                                        <input type="text" class="form-control" id="initialOfEp" name="initial_of_ep">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="remarks" class="form-label">Remarks</label>
-                                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
-                                    </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" id="closeModalViewViolation" data-bs-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                              </form>
-
+                                </form>
                             </div>
                         </div>
                     </div>
+                    <!--End of Modal-->
                 </div>
             </div>
 
