@@ -192,7 +192,7 @@ def submitted_offense_dt(request):
     search_term = request.GET.get('search[value]', None)
     if search_term:
         base_query = base_query.filter(
-            Q(personnel__afpsn__icontains=search_term) |
+            Q(authori=search_term) |
             Q(personnel__last_name__icontains=search_term) |
             Q(personnel__rank_id__icontains=search_term) |
             Q(offense__violation__icontains=search_term)
@@ -238,7 +238,7 @@ def submitted_offense_dt(request):
     }
 
     return JsonResponse(response)
-
+    
 
 # @login_required
 def submit_function(request):

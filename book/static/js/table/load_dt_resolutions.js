@@ -17,7 +17,8 @@ function initializeResolutionsDt() {
             { data: 'intl_first_sergeant' },
             { data: 'initial_of_ep' },
             { data: 'remarks' }
-        ]
+        ],
+
     });
 
     // Function to refresh the DataTable
