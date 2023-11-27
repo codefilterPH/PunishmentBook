@@ -1,10 +1,38 @@
 
-function initSubmittedViolationsDT() {
+/**
+ * Initializes the DataTable for submitted violations.
+ *
+ * @param {Object} params - Parameters for customization.
+ *   @property {string} params.excelUrl - The URL of the Excel template file.
+ */
+function initSubmittedViolationsDT(params) {
     var submittedViolation = $('#submittedViolationDt').DataTable({
-//        dom: 'Bfrtip',
-//        buttons: [
-//            'copy', 'csv', 'excel', 'pdf', 'print',
-//        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                text: 'Export to Excel',
+//                action: function () {
+//                    var templatePath = params.excelUrl;
+//                    var data = submittedViolation.ajax.json().data;
+//
+//                    customizeWorksheet(XLSX, templatePath, data);
+//                }
+            },
+            {
+                extend: 'csv',
+                text: 'Export to CSV',
+            },
+            {
+                extend: 'copy',
+                text: 'Copy to Clipboard',
+            },
+            {
+                extend: 'pdf',
+                text: 'Export as PDF',
+            },
+            'print',
+        ],
         serverSide: true,
         processing: true,
         ajax: {

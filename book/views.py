@@ -21,7 +21,7 @@ def submission_page(request):
 
 def all_violation_page(request):
     context = {}
-    return render(request, 'book/all_violation_record.html', context)
+    return render(request, 'book/cases_masterlist.html', context)
 
 
 def get_resolutions(request, pk):

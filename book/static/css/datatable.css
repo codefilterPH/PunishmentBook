@@ -7,46 +7,72 @@
         margin-bottom: 10px;
     }
 
-    .dt-buttons button {
+    .dt-button {
         padding: 10px;
         margin-right: 10px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-    }
-
-    .dt-buttons .buttons-copy {
-        background-color: #3498db; /* Blue color */
-        color: white;
-    }
-
-    .dt-buttons .buttons-csv {
-        background-color: #2ecc71; /* Green color */
-        color: white;
-    }
-
-    .dt-buttons .buttons-excel {
         background-color: #e74c3c; /* Red color */
         color: white;
     }
 
-    .dt-buttons button:hover {
+    .dt-button:hover {
         opacity: 0.8; /* Reduce opacity on hover */
+        color: black; /* Set text color on hover */
     }
 
-    .dt-buttons button:hover .buttons-copy {
+    .dt-button.buttons-copy {
+        background-color: #3498db; /* Blue color */
+        color: white;
+    }
+
+    .dt-button.buttons-csv {
+        background-color: #2ecc71; /* Green color */
+        color: white;
+    }
+
+    .dt-button.buttons-excel {
+        background-color: #e74c3c !important; /* Red color */
+        color: white;
+    }
+
+    .dt-button.buttons-pdf {
+        background-color: #f39c12; /* Yellow color */
+        color: white;
+    }
+
+    .dt-button.buttons-print {
+        background-color: #6c757d; /* Gray color */
+        color: white;
+    }
+
+    .dt-button:hover {
+        background-color: #dc3545 !important; /* Red color */
+        color: white;
+    }
+
+    .dt-button.buttons-copy:hover {
         background-color: #007bff; /* Blue color on hover */
     }
 
-    .dt-buttons button:hover .buttons-csv {
+    .dt-button.buttons-csv:hover {
         background-color: #28a745; /* Green color on hover */
     }
 
-    .dt-buttons button:hover .buttons-excel {
+    .dt-button.buttons-excel:hover {
         background-color: #dc3545; /* Red color on hover */
     }
 
-    .dt-buttons button::before {
+    .dt-button.buttons-pdf:hover {
+        background-color: #ffc107; /* Yellow color on hover */
+    }
+
+    .dt-button.buttons-print:hover {
+        background-color: #5a6268; /* Dark gray color on hover */
+    }
+
+    .dt-button::before {
         font-family: 'Font Awesome 6 Free', sans-serif; /* Use Font Awesome class directly */
         font-weight: 900;
         margin-right: 5px;
@@ -60,8 +86,20 @@
         content: '\f6dd'; /* CSV icon */
     }
 
+    .dt-button::before {
+          content: '\f1c3'; /* Excel icon */
+    }
+
     .dt-button.buttons-excel::before {
         content: '\f1c3'; /* Excel icon */
+    }
+
+    .dt-button.buttons-pdf::before {
+        content: '\f1c3'; /* PDF icon */
+    }
+
+    .dt-button.buttons-print::before {
+        content: '\f02f'; /* Print icon */
     }
 
 

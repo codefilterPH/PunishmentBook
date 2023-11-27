@@ -1,0 +1,189 @@
+
+/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />*/
+
+    /* EXPORT BUTTON */
+    .dt-buttons {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .dt-buttons button {
+        padding: 10px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: black; /* Set default text color */
+    }
+
+    .dt-buttons .buttons-copy {
+        background-color: #3498db; /* Blue color */
+        color: white;
+    }
+
+    .dt-buttons .buttons-csv {
+        background-color: #2ecc71; /* Green color */
+        color: white;
+    }
+
+    .dt-buttons .buttons-excel {
+        background-color: #e74c3c; /* Red color */
+        color: white;
+    }
+
+    .dt-buttons .buttons-pdf {
+        background-color: #f39c12; /* Yellow color */
+        color: white;
+    }
+
+    .dt-buttons .buttons-print {
+        background-color: #6c757d; /* Gray color */
+        color: white;
+    }
+
+    .dt-buttons button:hover {
+        opacity: 0.8; /* Reduce opacity on hover */
+        color: black; /* Set text color on hover */
+    }
+
+    .dt-buttons button:hover .buttons-copy {
+        background-color: #007bff; /* Blue color on hover */
+    }
+
+    .dt-buttons button:hover .buttons-csv {
+        background-color: #28a745; /* Green color on hover */
+    }
+
+    .dt-buttons button:hover .buttons-excel {
+        background-color: #dc3545; /* Red color on hover */
+    }
+
+    .dt-buttons button:hover .buttons-pdf {
+        background-color: #ffc107; /* Yellow color on hover */
+    }
+
+    .dt-buttons button:hover .buttons-print {
+        background-color: #5a6268; /* Dark gray color on hover */
+    }
+
+    .dt-buttons button::before {
+        font-family: 'Font Awesome 6 Free', sans-serif; /* Use Font Awesome class directly */
+        font-weight: 900;
+        margin-right: 5px;
+    }
+
+    .dt-button.buttons-copy::before {
+        content: '\f0c5'; /* Copy icon */
+    }
+
+    .dt-button.buttons-csv::before {
+        content: '\f6dd'; /* CSV icon */
+    }
+
+    .dt-button.buttons-excel::before {
+        content: '\f1c3'; /* Excel icon */
+    }
+
+    .dt-button.buttons-pdf::before {
+        content: '\f1c3'; /* PDF icon */
+    }
+
+    .dt-button.buttons-print::before {
+        content: '\f02f'; /* Print icon */
+    }
+
+
+    /* SEARCH BAR */
+    .custom-input-group {
+        display: flex;
+        width: 300px; /* Adjust the width as needed */
+        margin-bottom: 15px; /* Adjust spacing */
+    }
+
+    .custom-input-group .input-group-text {
+        background-color: #e9ecef; /* Background color */
+        border-color: #ced4da; /* Border color */
+        color: #495057; /* Text color */
+    }
+
+    .custom-input-group input {
+        border-color: #ced4da; /* Border color */
+    }
+    /* PAGINATION */
+    .dataTables_paginate {
+        margin-top: 10px; /* Adjust the top margin */
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        overflow: hidden; /* Ensure containment */
+    }
+
+    .pagination .page-item {
+        margin-right: 5px; /* Adjust spacing between pagination items */
+    }
+
+    .pagination .page-link {
+        padding: 8px 12px; /* Adjust padding as needed */
+        border: 1px solid #dee2e6; /* Border color */
+        color: #495057; /* Text color */
+        background-color: #e9ecef; /* Background color */
+        display: inline-block; /* Change display property to inline-block */
+        text-decoration: none; /* Remove default link underline */
+        box-sizing: border-box; /* Include padding in total width */
+        overflow: hidden; /* Ensure containment */
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+
+
+    .pagination .page-link:hover {
+        background-color: #ced4da; /* Hover background color */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff; /* Active page background color */
+        border-color: #007bff; /* Active page border color */
+        color: #fff; /* Active page text color */
+    }
+
+    .pagination .page-item.disabled .page-link {
+        pointer-events: none; /* Disable click on disabled items */
+        color: #6c757d; /* Disabled text color */
+        background-color: #fff; /* Disabled background color */
+        border: 1px solid #dee2e6; /* Disabled border color */
+    }
+
+    /* TABLE */
+    #ajaxPunishMasterTable {
+    margin-top: 20px; /* Adjust margin top as needed */
+    margin-bottom: 20px; /* Adjust margin bottom as needed */
+    }
+
+    #ajaxPunishMasterTable thead th {
+        background-color: #3498db; /* Header background color */
+        color: white; /* Header text color */
+    }
+
+    #ajaxPunishMasterTable tbody td {
+        background-color: #ecf0f1; /* Body background color */
+    }
+
+    #ajaxPunishMasterTable tbody tr:nth-child(odd) td {
+        background-color: #eaebee; /* Odd row background color */
+    }
+
+    #ajaxPunishMasterTable tbody tr:hover td {
+        background-color: rgb(197, 223, 240); /* Hovered row background color */
+    }
+
+    #ajaxPunishMasterTable_length,
+    #ajaxPunishMasterTable_info {
+        margin-top: 10px; /* Adjust margin top as needed */
+    }
+
+    .dataTables_paginate {
+        margin-top: 10px; /* Adjust margin top as needed */
+    }
+

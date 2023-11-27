@@ -34,15 +34,13 @@
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
-    <!--{% wagtailuserbar %} -->
+{% wagtailuserbar %}
 
 {% block content %} {% endblock %}
 
 {% block extra_js %}
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-3.3.0.min.js"></script>
-
     <!-- Popper js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
@@ -66,12 +64,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
 
-    <!-- other scripts... -->
+    <!-- DataTables PDF Button export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+    <!-- DataTables Buttons Print Extension JS -->
+    <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.print.min.js"></script>
+
+    <!-- xlsx (SheetJS) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <!-- FileSaver.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <!-- OTHER SCRIPTS -->
 
     <!-- FORM STEP -->
     <script src="{% static 'js/components/form_step/manage.js' %}"></script>
     <!--UTILS-->
     <script src="{% static 'js/utils/swal_messages.js' %}"></script>
+    <script src="{% static 'js/utils/excel_config.js' %}"></script>
     <!-- REDIRECTS -->
     <script src="{% static 'js/components/redirects/manage.js' %}"></script>
     <!-- FILE UPLOAD -->
@@ -102,7 +114,12 @@
         }
 
         $(document).ready(function() {
-            initSubmittedViolationsDT(); // Page
+            var excelUrl = "{% static 'docs/excel/template.xlsx' %}"; //for Datatables Excel Export defined the watermark image
+            var params = {
+                'excelUrl': excelUrl,
+            }
+
+            initSubmittedViolationsDT(params); // Page
 
             initializePersonnelDataTable();
             initializeViolationsDT();
